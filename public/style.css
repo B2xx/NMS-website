@@ -1,0 +1,929 @@
+body {
+  margin: 0;
+  color: #262614;
+}
+
+/* index page */
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  overflow-x: hidden;
+
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+section {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  scroll-snap-align: start;
+}
+.one {
+  justify-content: left;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(img/background\ img.jpeg) center/cover no-repeat;
+  padding: 5%;
+}
+.content {
+  max-width: 800px;
+}
+.content > h1 {
+  text-align: left;
+  font-size: 65px;
+  line-height: 65px;
+  margin: 0;
+
+  color: #fff;
+  font-family: "raleway", sans-serif;
+  font-weight: 500;
+}
+
+.two {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.material_img {
+  align-self: center;
+}
+img.material_img {
+  animation: fade-in linear;
+  animation-timeline: view();
+  /* Wher animation start from the bottom of the page */
+  animation-range-start: cover;
+  animation-range-end: contain;
+}
+
+@keyframes fade-in {
+  from {
+    scale: 0.8;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+.material_text {
+  max-width: 800px;
+  padding: 5%;
+  align-self: center;
+}
+.material_text > h2 {
+  color: #262614;
+  padding-bottom: 0%;
+  font-size: 48px;
+  font-family: "raleway", sans-serif;
+  font-weight: 500;
+}
+.material_text > h4 {
+  color: #262614;
+  padding-bottom: 5%;
+}
+
+.material-btn a {
+  display: block;
+  width: fit-content;
+  line-height: 40px;
+  font-family: inherit;
+  text-decoration: none;
+  color: #fff;
+  background-color: #96b85c;
+  letter-spacing: 2px;
+  text-align: center;
+  position: relative;
+  transition: all 0.35s;
+}
+
+.material-btn a span {
+  position: relative;
+  padding: 0 10px;
+  z-index: 2;
+  font-family: "raleway", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.material-btn a:after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #d6efa5;
+  transition: all 0.35s;
+}
+
+.material-btn a:hover {
+  color: #638b3d;
+}
+
+.material-btn a:hover:after {
+  width: 100%;
+}
+
+.three,
+.four,
+.scroll {
+  display: flex;
+  flex-direction: column;
+}
+
+.four {
+  background: linear-gradient(
+    to bottom,
+    #fff,
+    #fff 50%,
+    #638b3d 50%,
+    #638b3d 100%
+  );
+}
+
+.three img {
+  max-width: 22%;
+  animation: fade-in linear;
+  animation-timeline: view();
+  /* Wher animation start from the bottom of the page */
+  animation-range-start: cover;
+  animation-range-end: 30%;
+}
+
+.three_text {
+  color: #262614;
+  max-height: 38vw;
+}
+h4 {
+  font-family: "helvetica", sans-serif;
+  font-weight: lighter;
+}
+
+h2,
+h3 {
+  font-family: "raleway", sans-serif;
+  font-weight: 500;
+}
+
+.four,
+.scroll {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer{
+  margin: 0 -6%;
+}
+
+.footer-column {
+  color: #fff;
+}
+
+/* NavBar */
+.nav {
+  /* center the links */
+  position: fixed;
+  width: 100%;
+  text-align: left;
+  background-color: #638b3d;
+  padding: 0.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  z-index: 10;
+
+  font-family: "raleway", sans-serif;
+  font-weight: 300;
+}
+
+.nav button {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  font-family: inherit;
+  font-size: medium;
+  text-align: left;
+  padding: 0;
+}
+
+.nav-leftside {
+  text-align: left;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.nav-rightside {
+  text-align: left;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-right: 1em;
+}
+
+.nav-rightside a {
+  text-decoration: none;
+  color: #fff;
+  margin-right: 1em;
+  font-family: "raleway", sans-serif;
+  font-weight: 300;
+}
+
+/* The dropdown container */
+/* Dropdown content (hidden by default) */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: 1.2em;
+}
+.dropdown-content {
+  text-decoration: none;
+  display: none;
+  position: absolute;
+  min-width: 120px;
+  padding-top: calc(0.5em + 5px);
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: #fff;
+  text-decoration: none;
+  background-color: #638b3d;
+  display: block;
+  text-align: left;
+  z-index: 12;
+  padding: 5%;
+}
+
+/* Add a browner background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #96b85c;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.nav .decoration a {
+  float: none;
+  display: block;
+  width: 100%;
+  height: 2px;
+  left: 0;
+  background-color: #67735c;
+}
+.nav .decoration a:hover {
+  background-color: #96b85c;
+}
+
+.nav .decoration {
+  color: #fff; /* blue colors for links too */
+  text-decoration: none; /* no underline */
+  font-family: "raleway", sans-serif;
+  font-weight: 300;
+}
+
+/* login */
+.form-container {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container form {
+  gap: 10px;
+}
+
+.form-container input[type="text"] {
+  flex-grow: 3;
+}
+.form-container input[type="submit"] {
+  flex-grow: 1;
+}
+
+/* register */
+.register-content-container {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+.register-content-container form {
+  gap: 10px;
+}
+.register-content-container input[type="text"] {
+  flex-grow: 2;
+  width: 100%;
+}
+.register-content-container input[type="password"] {
+  flex-grow: 1;
+}
+
+/* for animation in index page*/
+.scroll-watcher {
+  height: 10px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: lime;
+  width: 100%;
+  scale: 0 1;
+  transform-origin: left;
+
+  animation: scroll-watcher linear;
+  animation-timeline: scroll();
+}
+
+@keyframes scroll-watcher {
+  to {
+    scale: 1 1;
+  }
+}
+
+img.venue {
+  animation: fade-in linear;
+  animation-timeline: view();
+  /* Wher animation start from the bottom of the page */
+  animation-range-start: cover;
+  animation-range-end: contain;
+}
+
+@keyframes fade-in {
+  from {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* For displaying the paintings in the section 5 of index page */
+.recipes {
+  padding: 0 5%;
+}
+
+.recipes h1 {
+  font-family: "raleway", sans-serif;
+  font-weight: 300;
+  text-align: left;
+  color: #638b3d;
+}
+
+/* header line */
+.recipes-header{
+  display:flex;
+  align-items:center;
+  gap:10rem;
+  padding-top: 4em;
+  padding-bottom: 2vw;
+}
+
+/* let h1 stay left; inputs shrink nicely */
+.recipes-header h1{ margin:0; }
+
+/* basic look - tweak to taste */
+.recipes-header input,
+.recipes-header select{
+  padding:0.4em 0.6em;
+  border:1px solid #ccc;
+  border-radius:4px;
+  font-family:"Raleway",sans-serif;
+  font-size:1rem;
+}
+
+.search-group button{
+  padding:.4em .8em; cursor:pointer;
+  border:1px solid #ccc; border-radius:4px;
+  font-family:"Raleway",sans-serif;
+}
+
+.art-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  /* padding-top: 2vw; */
+}
+
+.art {
+  min-width: 33%;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.art h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "raleway", sans-serif;
+  font-weight: 500;
+}
+
+.art img {
+  max-height: 216px;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+/* For Single Project */
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 30vw;
+  justify-content: center;
+  gap: 5%;
+}
+.container > img {
+  max-width: 60%;
+  max-height: 60%;
+}
+.caption {
+  padding-bottom: 2%;
+}
+.text {
+  font-size: 20px;
+}
+.text > h4 {
+  margin: 2px;
+}
+
+.comment-container {
+  background-color: #cdd9ba;
+  font-size: 14px;
+  padding: 5%;
+}
+.comment-container > p {
+  text-align: left;
+  padding-left: 4%;
+}
+.comment-container > form {
+  margin: 3%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4%;
+}
+
+.comment-container > form > input[type="text"] {
+  height: 8vw;
+  padding: 5%;
+}
+.comment-container > form > input[type="submit"] {
+  width: 5vw;
+}
+
+.comment-container > img {
+  max-width: 30%;
+  max-height: 30%;
+}
+
+.page {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  /* centering all the elements on the page */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.post {
+  width: 100%;
+  /* border: 3px #ffddd7 solid;
+  shorthand for margin-top and margin-bottom */
+  margin: 2px 0px;
+  padding: 5px;
+  position: relative;
+}
+
+.post-img {
+  max-width: 30%;
+}
+
+.remove-button {
+  display: none;
+}
+
+.remove-label {
+  transform: rotate(45deg);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.all-posts {
+  background-color: #cdd9ba;
+  white-space: pre-line;
+}
+
+.cover-img {
+  width: 100%;
+  max-height: 550px;
+  object-fit: cover;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.gallery-img {
+  min-width: 33%;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.gallery-img img {
+  max-height: 216px;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+/* For the singleProject page */
+.canvas {
+  padding: 50px;
+}
+.basic-info {
+  padding: 0.5em 0 0;
+}
+.basic-info h1 {
+  color: black;
+}
+
+.image-container img {
+  max-width: 80%;
+}
+
+/* for about page */
+.about {
+  font-family: "helvetica", sans-serif;
+
+  /* width: 100%;
+  height: 100vh; */
+  padding: 5% 5% 2% 5%;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+
+  scroll-snap-align: start;
+}
+
+.about > h1 {
+  font-family: "raleway", sans-serif;
+  font-weight: 200;
+  color: #638b3d;
+  text-align: left;
+  margin: 0 0 2% 0;
+}
+
+.eco {
+  background-color: #96b85c;
+  color: #fff;
+  padding: 2% 5% 2% 5%;
+}
+
+.eco h2 {
+  font-family: "raleway", sans-serif;
+  font-weight: 500;
+  color: #fff;
+  font-style: italic;
+}
+
+.eco p {
+  color: #fff;
+  font-family: "Helvetica", sans-serif;
+  font-weight: 300;
+}
+
+/* for people-partner page */
+.people-partner {
+  padding-right: 5%;
+  padding-bottom: 5%;
+  padding-left: 5%;
+}
+
+.people-partner > h1 {
+  font-family: "raleway", sans-serif;
+  font-weight: 300;
+  color: #638b3d;
+  text-align: left;
+  padding-top: 2em;
+}
+.people-partner p {
+  font-family: "helvetica", sans-serif;
+  font-weight: lighter;
+}
+
+.profile-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5%;
+}
+
+.profile {
+  text-align: center;
+  flex: 1;
+  display:flex;          /* turn the profile into a column-flex container   */
+  flex-direction:column; /* stack its children vertically                   */
+  align-items:center;
+}
+
+.profile img {
+  width: 150px;
+}
+
+.profile p {
+  font-weight: 300;
+}
+
+/* maker page */
+.maker h1 {
+  font-family: "raleway", sans-serif;
+  font-weight: lighter;
+  color: #638b3d;
+  text-align: left;
+}
+
+.maker h2 {
+  font-family: "raleway", sans-serif;
+  font-weight: lighter;
+  text-align: left;
+}
+
+.maker p {
+  font-family: "helvetica", sans-serif;
+  font-weight: lighter;
+}
+.maker-one {
+  justify-content: left;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(img/background\ img.jpeg) center/cover no-repeat;
+  padding: 5%;
+}
+
+.maker-two {
+  display: block;
+  padding: 5% 5% 2% 5%;
+}
+.maker-three {
+  display: block;
+  padding: 0 5% 2% 5%;
+}
+.maker-three h1 {
+  color: #000;
+}
+
+.maker-four {
+  display: block;
+  padding: 0 5% 2% 5%;
+}
+
+/* projects page */
+:root {
+  --black: #000;
+}
+
+.projects {
+  padding: 0 5%;
+}
+
+.projects > h1 {
+  font-family: "raleway", sans-serif;
+  font-weight: 300;
+  color: #638b3d;
+  text-align: left;
+  padding-top: 2em;
+}
+
+/* sub nav are shared with inspiration page */
+.sub-nav {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.sub-nav a {
+  font-size: 26px;
+  font-family: "raleway", sans-serif;
+  color: #999;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.2s;
+}
+
+.sub-nav a.active,
+.sub-nav a:hover {
+  color: var(--black);
+}
+
+.sub-nav a.active::after,
+.sub-nav a:hover::after {
+  content: "";
+  position: absolute;
+  left: 30%;
+  bottom: 0;
+  height: 2px;
+  width: 40%;
+  background: var(--black);
+}
+
+.intro p {
+  font-family: "helvetica", sans-serif;
+  font-weight: lighter;
+}
+
+.projects .card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.projects .card {
+  background: linear-gradient(180deg, #6cb04c 0%, #4e873c 100%);
+  border: 1px solid #3a6931;
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 80%;
+}
+
+.poster {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.poster span {
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  margin: 1rem 0 0.5rem;
+}
+
+.projects .button {
+  display: inline-block;
+  background: var(--green);
+  color: #fff;
+  font-family: "raleway", sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.projects .button:hover {
+  opacity: 0.8;
+}
+
+.tab-content {
+  display: none;
+  animation: fade 0.3s ease;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* For the inspiration page */
+.inspiration {
+  padding: 0 5%;
+}
+
+.inspiration > h1 {
+  font-family: "raleway", sans-serif;
+  font-weight: 300;
+  color: #638b3d;
+  text-align: left;
+  padding-top: 2em;
+}
+
+/* grid container */
+.inspiration .card-grid {
+  display: grid;
+  gap: 3rem 4rem; /* row gap | column gap */
+  text-align: center; /* keep if you want the text centred */
+  /* remove the flex lines */
+  padding: 0 5% 5% 5%;
+}
+
+.inspiration .card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* ← centers everything horizontally */
+  text-align: center;    /* keeps the <p> text centered too */
+}
+
+/* two columns when the viewport is wide enough */
+@media (min-width: 1000px) {
+  .inspiration .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- individual card rules stay unchanged --- */
+.card img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.card h3 {
+  margin-bottom: 0.5rem;
+}
+.card p {
+  font-family: helvetica, sans-serif;
+  font-weight: lighter;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0.75rem;
+  max-width: 90%;
+}
+
+/* Edit projects */
+.cover-preview {
+  max-width: 260px;
+  margin-bottom: 8px;
+}
+
+.gallery-item {
+  display: inline-block;
+  position: relative;
+  margin: 6px;
+  cursor: grab;
+}
+.gallery-item .thumb {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.gallery-item .delete-label {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  background: #fff;
+  padding: 2px 5px;
+  font-size: 12px;
+}

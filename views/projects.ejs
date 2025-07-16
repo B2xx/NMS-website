@@ -1,0 +1,103 @@
+<%- include('nav.ejs', {userName: user}) %>
+    <html>
+
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet">
+        <!-- script -->
+    </head>
+
+    <body>
+        <div class="projects">
+            <h1>Projects</h1>
+            <nav class="sub-nav">
+                <a href="?tab=activities">Activities</a>
+                <a href="?tab=outreach">Outreach</a>
+                <a href="?tab=ongoing">Ongoing Projects</a>
+            </nav>
+
+            <section id="activities" data-tab="activities" class="tab-content active">
+                <div class="intro">
+                    <h2>Introduction</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id velit purus. Integer venenatis
+                        eros nec consequat dapibus. Ligula aliquam aliquet urna, sed vestibulum lorem felis a sapien.
+                        Quisque vehicula velit eget turpis hendrerit, non sollicitudin massa interdum.</p>
+                </div>
+
+                <section class="card-grid">
+                    <article class="card">
+                        <div class="poster"><span>EXAMPLE<br>POSTER</span></div>
+                        <div>
+                            <h3 class="card-title">Workshop A</h3><a href="#" class="button">Read More &gt;</a>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <div class="poster"><span>EXAMPLE<br>POSTER</span></div>
+                        <div>
+                            <h3 class="card-title">Workshop B</h3><a href="#" class="button">Read More &gt;</a>
+                        </div>
+                    </article>
+                </section>
+                <div class="footer"><%- include('footer.ejs') %></div>
+            </section>
+
+            <section id="outreach" class="tab-content" data-tab="outreach">
+                <div class="intro">
+                    <h2>Outreach</h2>
+                    <p>Placeholder content for outreach activities. Replace with real copy as needed.</p>
+                </div>
+                <div class="footer"><%- include('footer.ejs') %></div>
+            </section>
+
+            <section id="ongoing" class="tab-content" data-tab="ongoing">
+                <div class="intro">
+                    <h2>Ongoing Projects</h2>
+                    <p>Information about ongoing projects goes here.</p>
+                </div>
+                <div class="footer"><%- include('footer.ejs') %></div>
+            </section>
+
+            <script>
+                const navLinks = document.querySelectorAll('.sub-nav a');
+                const tabs = document.querySelectorAll('[data-tab]');
+
+                function getCurrentTab() {
+                    const params = new URLSearchParams(location.search);
+                    return params.get('tab') || 'activities';
+                }
+
+                function activateTab(tab) {
+                    // highlight link
+                    navLinks.forEach(a => {
+                        a.classList.toggle('active', a.getAttribute('href') === `?tab=${tab}`);
+                    });
+                    // show the matching section
+                    tabs.forEach(sec => {
+                        sec.classList.toggle('active', sec.dataset.tab === tab);
+                    });
+                    // always ensure we’re at the very top
+                    window.scrollTo({ top: 0, left: 0 });
+                }
+
+                // intercept clicks so we update the URL without jump‑scroll
+                navLinks.forEach(a => {
+                    a.addEventListener('click', e => {
+                        e.preventDefault();
+                        const tab = a.getAttribute('href').replace('?tab=', '');
+                        history.replaceState(null, '', `?tab=${tab}`);
+                        activateTab(tab);
+                    });
+                });
+
+                // initial render + back/forward buttons
+                window.addEventListener('DOMContentLoaded', () => activateTab(getCurrentTab()));
+                window.addEventListener('popstate', () => activateTab(getCurrentTab()));
+            </script>
+
+    </body>
+
+    </html>

@@ -1,0 +1,110 @@
+<%- include('nav.ejs', {userName: user}) %>
+    <html>
+
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet">
+        <!-- script -->
+    </head>
+
+    <body>
+        <div class="inspiration">
+            <h1>Inspiration and Gallery</h1>
+            <nav class="sub-nav">
+                <a href="?tab=artists">Artists/Makers and Art</a>
+                <a href="?tab=speculative">Speculative Design</a>
+            </nav>
+
+            <section id="artists" class="tab-content active" data-tab="artists">
+                <div class="card-grid">
+                    <!-- card 1 -->
+                    <article class="card">
+                        <img src="https://placehold.co/300x300?text=Image+1" alt="">
+                        <h3>Page Title Here</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla ac auctor
+                            tincidunt, risus nulla ultricies felis, id scelerisque elit lorem a nisi.</p>
+                        <div class = "material-btn" style = "margin-right: auto; margin-left: auto;"><a href="#"><span>Read More ></span></a></div>
+                    </article>
+
+                    <!-- card 2 -->
+                    <article class="card">
+                        <img src="https://placehold.co/300x300?text=Image+2" alt="">
+                        <h3>Page Title Here</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla ac auctor
+                            tincidunt, risus nulla ultricies felis, id scelerisque elit lorem a nisi.</p>
+                        <div class = "material-btn" style = "margin-right: auto; margin-left: auto;"><a href="#"><span>Read More ></span></a></div>
+                    </article>
+
+                    <!-- card 3 -->
+                    <article class="card">
+                        <img src="https://placehold.co/300x300?text=Image+3" alt="">
+                        <h3>Page Title Here</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla ac auctor
+                            tincidunt, risus nulla ultricies felis, id scelerisque elit lorem a nisi.</p>
+                        <div class = "material-btn" style = "margin-right: auto; margin-left: auto;"><a href="#"><span>Read More ></span></a></div>
+                    </article>
+
+                    <!-- card 4 -->
+                    <article class="card">
+                        <img src="https://placehold.co/300x300?text=Image+4" alt="">
+                        <h3>Page Title Here</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla ac auctor
+                            tincidunt, risus nulla ultricies felis, id scelerisque elit lorem a nisi.</p>
+                        <div class = "material-btn" style = "margin-right: auto; margin-left: auto;"><a href="#"><span>Read More ></span></a></div>
+                    </article>
+                </div>
+                <div class="footer"><%- include('footer.ejs') %></div>
+            </section>
+
+            <section id="speculative design" class="tab-content" data-tab="speculative">
+                <div class="intro">
+                    <h2>Speculative Design</h2>
+                    <p>Content for Speculative Design</p>
+                </div>
+                <div class="footer"><%- include('footer.ejs') %></div>
+            </section>
+
+
+            <script>
+                const navLinks = document.querySelectorAll('.sub-nav a');
+                const tabs = document.querySelectorAll('[data-tab]');
+
+                function getCurrentTab() {
+                    const params = new URLSearchParams(location.search);
+                    return params.get('tab') || 'artists';
+                }
+
+                function activateTab(tab) {
+                    // highlight link
+                    navLinks.forEach(a => {
+                        a.classList.toggle('active', a.getAttribute('href') === `?tab=${tab}`);
+                    });
+                    // show the matching section
+                    tabs.forEach(sec => {
+                        sec.classList.toggle('active', sec.dataset.tab === tab);
+                    });
+                    // always ensure we’re at the very top
+                    window.scrollTo({ top: 0, left: 0 });
+                }
+
+                // intercept clicks so we update the URL without jump‑scroll
+                navLinks.forEach(a => {
+                    a.addEventListener('click', e => {
+                        e.preventDefault();
+                        const tab = a.getAttribute('href').replace('?tab=', '');
+                        history.replaceState(null, '', `?tab=${tab}`);
+                        activateTab(tab);
+                    });
+                });
+
+                // initial render + back/forward buttons
+                window.addEventListener('DOMContentLoaded', () => activateTab(getCurrentTab()));
+                window.addEventListener('popstate', () => activateTab(getCurrentTab()));
+            </script>
+    </body>
+
+    </html>

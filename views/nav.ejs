@@ -1,0 +1,59 @@
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<div class="nav">
+    <div class="nav-leftside">
+        <!-- <a class = "decoration">Information</a>
+        <a class = "decoration">Materials</a>
+        <a class = "decoration">Projects</a>
+        <a class = "decoration">Inspiration and Gallery</a> -->
+        <!-- <a class = "decoration">Insights</a> -->
+        <div class="dropdown">
+            <button class="decoration">Information</button>
+            <div class="dropdown-content">
+                <a href=/about>About</a>
+                <a href="/people">People</a>
+                <a href="/partnerships">Partnerships</a>
+                <a href="/maker-in-residence">"Makers in Residence"</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="decoration">Materials</button>
+            <div class="dropdown-content">
+                <a href="/recipes">Recipes</a>
+                <a href="#">Research</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="decoration">Projects</button>
+            <div class="dropdown-content">
+                <a href="/projects">Workshops</a>
+                <a href="/projects?tab=outreach">Outreach</a>
+                <a href="/projects?tab=ongoing">Ongoing Projects</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="decoration">Inspiration and Gallery</button>
+            <div class="dropdown-content">
+                <a href="/inspiration?tab=artists">Artists/ Makers and Arts</a>
+                <a href="/inspiration?tab=speculative">Emerging Science/ Tech</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="decoration">Insights</button>
+            <div class="dropdown-content">
+                <a href="#">News</a>
+                <a href="#">Texts</a>
+            </div>
+        </div>
+    </div>
+    <div class="nav-rightside">
+        <% if (userName) { %>
+            <a style="margin-top: 0.5%">Hello, <%= userName%></a>
+            <a class="decoration" href="/logout">Log Out</a>
+            <% } else { %>
+                <a class="decoration" href="/login">Log In</a>
+                <%} %>
+    </div>
+</div>

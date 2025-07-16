@@ -1,0 +1,67 @@
+<%- include('nav.ejs') %>
+
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet">
+  <!-- script -->
+</head>
+  <body>
+    <div class = "canvas">
+      <div class = "basic-info">
+        <h1><%= post.title %> </h1>
+        <h4>Author <%= post.author %> </h4>
+        <h4>Email <%= post.email %></h4>
+        <h4>Time <%= post.date %> </h4>
+      </div>
+      <div class="image-container">
+          <% if (post.coverSrc) { %>
+            <img class="cover-img" src="<%= post.coverSrc %>" alt="Cover">
+          <% } %>
+      </div>
+      <h2>Brief</h2>
+      <p><%= post.brief %></p>
+      <hr style="border: 1px solid #999;">
+      <h3>Ingredients</h3>
+      <p><%= post.ingredients %></p>
+      <hr style="border: 1px solid #999;">
+      <h3>Tools</h3>
+      <p><%= post.tools %></p>
+      <hr style="border: 1px solid #999;">
+      <h3>Introduction / Purpose</h3>
+      <p><%= post.introduction %></p>
+      <hr style="border: 1px solid #999;">
+      <h3>Methods</h3>
+      <p><%= post.methods %></p>
+      <hr style="border: 1px solid #999;">
+      <h3>Curing Time and Temperature</h3>
+      <p><%= post.curingT %></p>
+      <hr style="border: 1px solid #999;">
+      <h3>Results</h3>
+      <p><%= post.results %></p>
+      <hr style="border: 1px solid #999;">
+      <h3>Pysical Aspect</h3>
+      <p><%= post.physical %></p>
+      <hr style="border: 1px solid #999;">
+      <h3>Material Observations (External Factors or Changes Over Time)</h3>
+      <p><%= post.materialO %></p>
+      <hr style="border: 1px solid #999;">
+      <h3>Other Oberservation</h3>
+      <p><%= post.otherO %></p>
+      <hr style="border: 1px solid #999;">
+        <% if (post.gallerySrc && post.gallerySrc.length) { %>
+        <h3>Process / Gallery</h3>
+          <div class="gallery">
+            <% post.gallerySrc.forEach(src => { %>
+              <img class="gallery-img" src="<%= src %>" alt="Gallery image">
+            <% }) %>
+          </div>
+        <% } %>
+        </div>
+    </div>
+  </body>
+  </html>

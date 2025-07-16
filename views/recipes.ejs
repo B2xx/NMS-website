@@ -1,0 +1,161 @@
+<%- include('nav.ejs', {userName: userName}) %>
+    <html>
+
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet">
+        <!-- script -->
+    </head>
+
+    <body>
+        <div class="recipes">
+
+            <div class="recipes-header">
+                <h1>Recipes</h1>
+                <!-- Search input -->
+                <div class="search-group">
+                    <input id="recipeSearch" type="text" placeholder="Search…" autocomplete="off" />
+                    <button id="recipeSearchBtn">Search</button>
+                </div>
+
+                <!-- Sort / filter menu -->
+                <select id="recipeSort">
+                    <option value="year_desc">Newest → Oldest</option>
+                    <option value="year_asc">Oldest → Newest</option>
+                    <option value="name_asc">Name A → Z</option>
+                    <option value="name_desc">Name Z → A</option>
+                </select>
+            </div>
+
+            <nav class="sub-nav">
+                <a class="tab-link active" data-tag="">All</a>
+                <a class="tab-link" data-tag="Bioplastics">Bioplastics</a>
+                <a class="tab-link" data-tag="Ceramics">Ceramics</a>
+                <a class="tab-link" data-tag="Pigments">Pigments</a>
+                <a class="tab-link" data-tag="Composites">Composites</a>
+            </nav>
+
+            <div class="scroll">
+                <!-- use fetch script to get all of the information -->
+                <div class="art-container">
+                    <div class="art" onclick="location.href='/singleProject';">
+                        <img src="Links/1.JPG" alt="" srcset="">
+                        <h3>Material Name</h3>
+                        <h4>Year</h4>
+                        <h4>Category</h4>
+                        <h4>Brief</h4>
+                    </div>
+                    <div class="art">
+                        <img src="Links/2.JPG" alt="" srcset="">
+                        <h3>Material Name</h3>
+                        <h4>Year</h4>
+                        <h4>Category</h4>
+                        <h4>Brief</h4>
+                    </div>
+                    <div class="art">
+                        <img src="Links/3.JPG" alt="" srcset="">
+                        <h3>Material Name</h3>
+                        <h4>Year</h4>
+                        <h4>Category</h4>
+                        <h4>Brief</h4>
+                    </div>
+                    <div class="art">
+                        <img src="Links/3.JPG" alt="" srcset="">
+                        <h3>Material Name</h3>
+                        <h4>Year</h4>
+                        <h4>Category</h4>
+                        <h4>Brief</h4>
+                    </div>
+                    <% posts.forEach((post)=> { %>
+                        <div class="art" onclick="location.href='/singleProject/<%= post._id %>';">
+                            <% if (post.coverSrc) { /* NEW preferred field */ %>
+                                <img src="<%= post.coverSrc %>" alt="Cover image">
+
+                                <% } else if (post.imgSrc) { /* legacy one-off image */ %>
+                                    <img src="<%= post.imgSrc %>" alt="Post image">
+
+                                    <% } else if (post.gallerySrc && post.gallerySrc.length) { /* tiny safety net –
+                                        first gallery shot */ %>
+                                        <img src="<%= post.gallerySrc[0] %>" alt="Gallery image">
+
+                                        <% } else { /* final fallback */ %>
+                                            <img src="/Links/default.jpg" alt="Default image">
+                                            <% } %>
+                                                <h3>
+                                                    <%= post.title %>
+                                                </h3>
+                                                <h4>
+                                                    <%= new Date(post.timestamp).getFullYear() %>
+                                                </h4>
+                                                <h4>
+                                                    <%= post.tag || 'Category' %>
+                                                </h4>
+                                                <h4>
+                                                    <%= post.brief %>
+                                                </h4>
+                        </div>
+                        <% }); %>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const searchEl = document.getElementById('recipeSearch');
+            const searchBtn = document.getElementById('recipeSearchBtn');
+            const sortEl = document.getElementById('recipeSort');
+            const artBox = document.querySelector('.art-container');
+            const tabLinks = document.querySelectorAll('.tab-link');
+
+            let currentTag = '';                         // '' ⇒ All
+            const originalArtHTML = artBox.innerHTML;    // snapshot
+
+            async function refreshRecipes() {
+                const q = searchEl.value.trim();
+                const sort = sortEl.value;
+                const tag = currentTag;
+
+                // quick snap-back (all defaults)
+                const usingDefaults = !q && !tag && sort === 'year_desc';
+                if (usingDefaults) {
+                    artBox.innerHTML = originalArtHTML;
+                    return;
+                }
+
+                // fetch filtered list
+                const url = `/recipes-data?search=${encodeURIComponent(q)}&sort=${sort}&tag=${encodeURIComponent(tag)}`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                artBox.innerHTML = data.map(p => `
+    <div class="art" onclick="location.href='/singleProject/${p._id}';">
+      <img src="${p.coverSrc || p.imgSrc || (p.gallerySrc && p.gallerySrc[0]) || '/Links/default.jpg'}" alt="">
+      <h3>${p.title}</h3>
+      <h4>${new Date(p.timestamp).getFullYear()}</h4>
+      <h4>${p.tag || 'Category'}</h4>
+      <h4>${p.brief}</h4>
+    </div>
+  `).join('');
+            }
+
+            /* ——— event wiring ——— */
+            searchBtn.addEventListener('click', refreshRecipes);
+            searchEl.addEventListener('keypress', e => { if (e.key === 'Enter') refreshRecipes(); });
+            sortEl.addEventListener('change', refreshRecipes);
+
+            tabLinks.forEach(link => {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    currentTag = link.dataset.tag;           // update global tag
+                    tabLinks.forEach(l => l.classList.toggle('active', l === link));
+                    refreshRecipes();
+                });
+            });
+        </script>
+
+    </body>
+
+    </html>

@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<%- include('nav.ejs', { userName: userName }) %>
+
+    <div class="comment-container">
+        <form method="POST" action="/updateProject" enctype="multipart/form-data">
+
+            <!-- keep the id so we know what to update -->
+            <input type="hidden" name="postId" value="<%= post._id %>" />
+
+            <p>Title</p>
+            <input type="text" name="title" value="<%= post.title %>" />
+            <p>Author</p>
+            <input type="text" name="author" value="<%= post.author %>" />
+            <p>Email</p>
+            <input type="text" name="email" value="<%= post.email %>" />
+            <p>Brief</p>
+            <textarea name="brief" class="autosize"><%= post.brief %></textarea>
+            <p>Ingredients</p>
+            <textarea name="ingredients" class="autosize"><%= post.ingredients %></textarea>
+            <p>Tag</p>
+            <select name="tag" required>
+            <% const tags = ['Bioplastics','Ceramics','Pigments','Composites']; %>
+            <% tags.forEach(t => { %>
+                <option value="<%= t %>" <%= post.tag === t ? 'selected' : '' %>><%= t %></option>
+            <% }) %>
+            </select>
+            <p>Tools</p>
+            <input type="text" name="tools" value="<%= post.tools %>" />
+            <p>Introduction / Purpose</p>
+            <textarea name="introduction" class="autosize"><%= post.introduction %></textarea>
+            <p>Methods</p>
+            <textarea name="methods" class="autosize"><%= post.methods %></textarea>
+            <p>Curing Time and Temperature</p>
+            <textarea name="curingT" class="autosize"><%= post.curingT %></textarea>
+            <p>Results</p>
+            <textarea name="results" class="autosize"><%= post.results %></textarea>
+            <p>Physical Aspect</p>
+            <textarea name="physical" class="autosize"><%= post.physical %></textarea>
+            <p>Material Observations</p>
+            <textarea name="materialO" class="autosize"><%= post.materialO %></textarea>
+            <p>Other Observations</p>
+            <textarea name="otherO" class="autosize"><%= post.otherO %></textarea>
+
+            <!-- optional new image -->
+            <!-- ---- COVER ----------------- -->
+            <h3>Cover</h3>
+            <% if (post.coverSrc) { %>
+            <img src="<%= post.coverSrc %>" class="cover-preview">
+            <label><input type="checkbox" name="removeCover"> remove</label>
+            <% } else { %>
+            <p>No cover yet</p>
+            <% } %>
+
+            <p>Replace cover (optional)</p>
+            <input type="file" name="coverImage" accept="image/*">
+
+
+            <!-- ---- GALLERY (existing) --------------- -->
+            <h3>Gallery (drag to reorder &nbsp;|&nbsp; tick to delete)</h3>
+
+            <ul id="galleryList">
+            <% (post.gallerySrc || []).forEach((src, i) => { %>
+                <li class="gallery-item">
+                <img src="<%= src %>" class="thumb">
+                <!-- hidden input preserves order; its NAME will get rewritten by JS -->
+                <input type="hidden" name="existingGallery[<%= i %>]" value="<%= src %>">
+                <label class="delete-label">
+                    <input type="checkbox" name="deleteGallery[]" value="<%= src %>"> delete
+                </label>
+                </li>
+            <% }) %>
+            </ul>
+
+            <!-- add more shots -->
+            <p>Add more gallery images</p>
+            <input type="file" name="galleryImages" accept="image/*" multiple>
+
+            <input type="submit" value="Save changes" />
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const list = document.getElementById('galleryList');
+    if (!list) return;
+
+    Sortable.create(list, {
+        animation: 150,
+        onEnd() {
+        // rename hidden inputs so the server receives them in the new order
+        [...list.querySelectorAll('li')].forEach((li, index) => {
+            const hidden = li.querySelector('input[type=hidden]');
+            hidden.name = `existingGallery[${index}]`;
+        });
+        }
+    });
+    });
+    </script>
+</body>
+</html>
