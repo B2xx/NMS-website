@@ -61,11 +61,13 @@ function requiresAuthentication(req, res, next) {
   }
 }
 
+//Index Page
 app.get("/", (request, response) => {
   /////////////////////////////////////
   // remove the if statement
   // if(request.session.loggedInUser){
   console.log(request.cookies.visits);
+
   if (request.cookies.visits) {
     let newVisit = parseInt(request.cookies.visits) + 1;
     response.cookie("visits", newVisit, {
@@ -77,29 +79,35 @@ app.get("/", (request, response) => {
     });
   }
 
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("index.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
-  // } else {
-  //   response.redirect('/login')
-  // }
-  /////////////////////////////////////
+  response.render("index.ejs", {
+    posts: data,
+    visitsToSite: request.cookies.visits,
+    user: request.session.loggedInUser,
+  });
 });
 
-app.get("/material", (request, response) => {
+//Information Pages
+app.get("/about", (request, response) => {
+  console.log(request.cookies.visits);
+
+  if (request.cookies.visits) {
+    let newVisit = parseInt(request.cookies.visits) + 1;
+    response.cookie("visits", newVisit, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  } else {
+    response.cookie("visits", 1, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  }
+
+  response.render("information/about.ejs", {
+    visitsToSite: request.cookies.visits,
+    user: request.session.loggedInUser,
+  });
+});
+
+app.get("/people", (request, response) => {
   console.log(request.cookies.visits);
   if (request.cookies.visits) {
     let newVisit = parseInt(request.cookies.visits) + 1;
@@ -112,24 +120,51 @@ app.get("/material", (request, response) => {
     });
   }
 
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("material.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
+  response.render("information/people.ejs", {
+    visitsToSite: request.cookies.visits,
+    user: request.session.loggedInUser,
+  });
 });
 
+app.get("/partnerships", (request, response) => {
+  console.log(request.cookies.visits);
+  if (request.cookies.visits) {
+    let newVisit = parseInt(request.cookies.visits) + 1;
+    response.cookie("visits", newVisit, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  } else {
+    response.cookie("visits", 1, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  }
+
+  response.render("information/partnerships.ejs", {
+    visitsToSite: request.cookies.visits,
+    user: request.session.loggedInUser,
+  });
+});
+
+app.get("/maker-in-residence", (request, response) => {
+  console.log(request.cookies.visits);
+  if (request.cookies.visits) {
+    let newVisit = parseInt(request.cookies.visits) + 1;
+    response.cookie("visits", newVisit, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  } else {
+    response.cookie("visits", 1, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  }
+
+  response.render("information/maker.ejs", {
+    visitsToSite: request.cookies.visits,
+    user: request.session.loggedInUser,
+  });
+});
+
+//Material Pages
 app.get('/recipes', (req, res) => {
   let query = {};
   let sortQuery = { timestamp: -1 };
@@ -140,97 +175,57 @@ app.get('/recipes', (req, res) => {
       return;
     }
 
-    res.render('recipes.ejs', {
+    res.render('materials/recipes.ejs', {
       posts: posts, // Pass the posts to the EJS template
       userName: req.session.loggedInUser,
     });
   });
 });
 
+//search, filter feature of recipe page
+app.get('/recipes-data', (req, res) => {
+  const { search = '', sort = 'year_desc', tag = '' } = req.query;  
+  const sortMap = {
+    year_desc: { timestamp: -1 },
+    year_asc:  { timestamp:  1 },
+    name_asc:  { title:      1 },
+    name_desc: { title:     -1 },
+  };
 
+  // Escape any regex metacharacters so "c++" doesn't blow up
+  const safe = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const rx    = new RegExp(safe, 'i');          // case-insensitive
+
+  const filter = {};
+  if (search) filter.$or = [
+    { title: rx }, { brief: rx }, { ingredients: rx }
+  ];
+  if (tag) filter.tag = tag;  
+
+    projectbase
+    .find(filter)
+    .sort(sortMap[sort] || {})
+    .exec((err, docs) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(docs);
+    });
+});
+
+//Individual recipe page
 app.get('/singleProject/:id', (request, response) => {
   const id = request.params.id;
-  
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
 
   projectbase.findOne({ _id: id }, (err, doc) => {
     if (err || !doc) {
       return response.status(404).send('Project not found');
     }
 
-    response.render('singleProject.ejs', {
+    response.render('materials/singleProject.ejs', {
       post: doc,                           // **one** document
       visitsToSite: request.cookies.visits,
       userName: request.session.loggedInUser,
     });
   });
-});
-
-
-app.get("/material", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("material.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
-});
-
-app.get("/projects", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("projects.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
 });
 
 const uploadPictures = upload.fields([
@@ -270,383 +265,7 @@ app.post(
   }
 );
 
-
-app.post('/remove', requiresAuthentication, (req, res) => {
-  const removedId = req.body.postId;          // e.g. "EocpKYOZbg45qBhJ"
-
-  projectbase.remove(
-    { _id: removedId },   // query
-    {},                   // options  ({} = default, multi: false)
-    (err, numRemoved) => {
-      if (err) {
-        console.error('NeDB remove error:', err);
-        return res.status(500).send('Failed to delete');
-      }
-      console.log('num removed elements', numRemoved);
-      res.redirect('back');
-    }
-  );
-});
-
-/////////////////////////////////////
-app.post("/comment", requiresAuthentication, (req, res) => {
-  // local variables for commenting data
-  let postId = req.body.postId;
-  let commentText = req.body.comment;
-  let commentUser = req.session.loggedInUser;
-
-  let query = {
-    _id: postId,
-  };
-
-  let commentData = {
-    text: commentText,
-    user: commentUser,
-  };
-
-  // https://github.com/louischatriot/nedb
-  let update = {
-    $push: { comments: commentData },
-  };
-
-  database.update(query, update, {}, (err, numUpdated) => {
-    console.log(`${numUpdated} comment has been added`);
-    res.redirect("/singlePainting?id="+numPainting);
-  });
-});
-/////////////////////////////////////
-
-app.get("/login", (req, res) => {
-  // console.log(req.query.error)
-  if (req.query.error) {
-    res.render("login.ejs", { error: true });
-  } else {
-    res.render("login.ejs", {referer:req.headers.referer});
-  }
-});
-
-app.get("/register", (req, res) => {
-  res.render("register.ejs", {});
-});
-
-// code block for handling post requests from /auth and /signup
-app.post("/signup", upload.single("profilePicture"), (req, res) => {
-  // encrypting password so plain text is not store in db
-  let hashedPassword = bcrypt.hashSync(req.body.password, 10);
-
-  // local variable that holds my data obj to be inserted into userdb
-  let data = {
-    username: req.body.username,
-    password: hashedPassword,
-  };
-
-  if (req.file) {
-    data.filepath = "/uploads/" + req.file.filename;
-  }
-
-  userdatabase.insert(data, (err, dataInserted) => {
-    console.log(dataInserted);
-    res.redirect("/login");
-  });
-});
-
-app.post("/authenticate", (req, res) => {
-  let attemptLogin = {
-    username: req.body.username,
-    password: req.body.password,
-  };
-
-  let searchQuery = {
-    username: attemptLogin.username,
-  };
-
-  userdatabase.findOne(searchQuery, (err, user) => {
-    console.log("login attempted");
-    if (err || user == null) {
-      res.redirect("/login");
-    } else {
-      console.log("found user");
-
-      // getting the stored password in the database
-      let encPass = user.password;
-      // using bcrypt to get the stored password, decrypt it and compare to attempted login password
-      if (bcrypt.compareSync(attemptLogin.password, encPass)) {
-        // storing login data to the session so the user does not have to login again
-        let session = req.session;
-        session.loggedInUser = attemptLogin.username;
-
-        console.log("successful login");
-        res.redirect(req.body.referer);
-      } else {
-        res.redirect("/login");
-      }
-    }
-  });
-});
-
-app.get("/logout", (req, res) => {
-  delete req.session.loggedInUser;
-  res.redirect("/");
-});
-
-app.get("/singleProject", async (req, res, next) => {
-  try {
-    console.log(req.cookies.visits);
-
-    if (req.cookies.visits) {
-      let newVisit = parseInt(req.cookies.visits) + 1;
-      res.cookie("visits", newVisit, {
-        expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-      });
-    } else {
-      res.cookie("visits", 1, {
-        expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-      });
-    }
-
-    let query = {};
-    let sortQuery = { timestamp: -1 };
-
-    // Convert NeDB's exec function to return a Promise
-    const findAsync = (db, query, sortQuery) => {
-      return new Promise((resolve, reject) => {
-        db.find(query).sort(sortQuery).exec((err, data) => {
-          if (err) reject(err);
-          else resolve(data);
-        });
-      });
-    };
-
-    const comments = await findAsync(database, query, sortQuery);
-    const posts = await findAsync(projectbase, query, sortQuery);
-
-    res.render("singleProject.ejs", {
-      comment: comments,
-      posts: posts,
-      visitsToSite: req.cookies.visits,
-      userName: req.session.loggedInUser,
-    });
-  } catch (err) {
-    next(err); // Pass error to Express error handler
-  }
-});
-
-
-app.get("/about", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("about.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
-});
-
-app.get("/people", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("people.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
-});
-
-app.get("/partnerships", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("partnerships.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
-});
-
-app.get("/people", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("people.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
-});
-
-app.get("/maker-in-residence", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("maker.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
-});
-
-app.get("/inspiration", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  let query = {};
-
-  let sortQuery = {
-    timestamp: -1,
-  };
-
-  database
-    .find(query)
-    .sort(sortQuery)
-    .exec((err, data) => {
-      response.render("inspiration.ejs", {
-        posts: data,
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
-    });
-});
-
-app.get('/recipes-data', (req, res) => {
-  const { search = '', sort = 'year_desc', tag = '' } = req.query;  
-  const sortMap = {
-    year_desc: { timestamp: -1 },
-    year_asc:  { timestamp:  1 },
-    name_asc:  { title:      1 },
-    name_desc: { title:     -1 },
-  };
-
-  // Escape any regex metacharacters so "c++" doesn't blow up
-  const safe = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const rx    = new RegExp(safe, 'i');          // case-insensitive
-
-  const filter = {};
-  if (search) filter.$or = [
-    { title: rx }, { brief: rx }, { ingredients: rx }
-  ];
-  if (tag) filter.tag = tag;  
-
-    projectbase
-    .find(filter)
-    .sort(sortMap[sort] || {})
-    .exec((err, docs) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json(docs);
-    });
-});
-
-
+//Upload, update and delete projects feature
 app.get("/form", (request, response) => {
   console.log(request.cookies.visits);
   if (request.cookies.visits) {
@@ -817,6 +436,121 @@ app.post(
     );
   }
 );
+
+//Login, register feature
+app.get("/login", (req, res) => {
+  // console.log(req.query.error)
+  if (req.query.error) {
+    res.render("login.ejs", { error: true });
+  } else {
+    res.render("login.ejs", {referer:req.headers.referer});
+  }
+});
+
+app.get("/register", (req, res) => {
+  res.render("register.ejs", {});
+});
+
+// code block for handling post requests from /auth and /signup
+app.post("/signup", upload.single("profilePicture"), (req, res) => {
+  // encrypting password so plain text is not store in db
+  let hashedPassword = bcrypt.hashSync(req.body.password, 10);
+
+  // local variable that holds my data obj to be inserted into userdb
+  let data = {
+    username: req.body.username,
+    password: hashedPassword,
+  };
+
+  if (req.file) {
+    data.filepath = "/uploads/" + req.file.filename;
+  }
+
+  userdatabase.insert(data, (err, dataInserted) => {
+    console.log(dataInserted);
+    res.redirect("/login");
+  });
+});
+
+app.post("/authenticate", (req, res) => {
+  let attemptLogin = {
+    username: req.body.username,
+    password: req.body.password,
+  };
+
+  let searchQuery = {
+    username: attemptLogin.username,
+  };
+
+  userdatabase.findOne(searchQuery, (err, user) => {
+    console.log("login attempted");
+    if (err || user == null) {
+      res.redirect("/login");
+    } else {
+      console.log("found user");
+
+      // getting the stored password in the database
+      let encPass = user.password;
+      // using bcrypt to get the stored password, decrypt it and compare to attempted login password
+      if (bcrypt.compareSync(attemptLogin.password, encPass)) {
+        // storing login data to the session so the user does not have to login again
+        let session = req.session;
+        session.loggedInUser = attemptLogin.username;
+
+        console.log("successful login");
+        res.redirect(req.body.referer);
+      } else {
+        res.redirect("/login");
+      }
+    }
+  });
+});
+
+app.get("/logout", (req, res) => {
+  delete req.session.loggedInUser;
+  res.redirect("/");
+});
+
+//Projects Pages
+app.get("/projects", (request, response) => {
+  console.log(request.cookies.visits);
+  if (request.cookies.visits) {
+    let newVisit = parseInt(request.cookies.visits) + 1;
+    response.cookie("visits", newVisit, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  } else {
+    response.cookie("visits", 1, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  }
+
+  response.render("projects/projects.ejs", {
+    visitsToSite: request.cookies.visits,
+    user: request.session.loggedInUser,
+  });
+});
+
+
+//Inspiration Pages
+app.get("/inspiration", (request, response) => {
+  console.log(request.cookies.visits);
+  if (request.cookies.visits) {
+    let newVisit = parseInt(request.cookies.visits) + 1;
+    response.cookie("visits", newVisit, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  } else {
+    response.cookie("visits", 1, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  }
+
+      response.render("inspirationAndGallery/inspiration.ejs", {
+        visitsToSite: request.cookies.visits,
+        user: request.session.loggedInUser,
+      });
+});
 
 const port = 7626;
 app.listen(port, () => {

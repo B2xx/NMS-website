@@ -1,0 +1,3 @@
+{"title":"1","author":"","email":"","brief":"","ingredients":"","tag":"Ceramics","tools":"","introduction":"","methods":"","curingT":"","results":"","physical":"","materialO":"","otherO":"","date":"7/22/2025, 5:23:59 PM","timestamp":1753176239665,"coverSrc":"/uploads/f4c63b29867120ebc90fe495fa13a08a","_id":"LbTlB1TRNrDUwpGA"}
+{"title":"1","author":"","email":"","brief":"","ingredients":"","tag":"Ceramics","tools":"","introduction":"","methods":"","curingT":"","results":"","physical":"","materialO":"","otherO":"","date":"7/22/2025, 5:23:59 PM","timestamp":1753176239665,"coverSrc":"/uploads/f4c63b29867120ebc90fe495fa13a08a","_id":"LbTlB1TRNrDUwpGA"}
+{"$$deleted":true,"_id":"LbTlB1TRNrDUwpGA"}
