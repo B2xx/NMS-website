@@ -371,7 +371,7 @@ img.venue {
   }
 }
 
-/* For displaying the paintings in the section 5 of index page */
+/* Recipe Pages */
 .recipes {
   padding: 0 5%;
 }
@@ -412,19 +412,17 @@ img.venue {
 }
 
 .art-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  gap: 10px;
-  height: 100%;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  /* padding-top: 2vw; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 3 equal tracks per row */
+    gap: 10px;                               /* keeps the spacing you already use */
+    overflow-x: hidden;                      /* no sideways scrollbar */
+    overflow-y: auto;                        /* vertical scroll if list is long */
+    padding-top: 2vw; 
 }
 
 .art {
-  min-width: 33%;
+  min-width: 0;
+  width: 100%;
   /* border: 1px solid black; */
   display: flex;
   flex-direction: column;
@@ -546,13 +544,43 @@ img.venue {
   object-fit: cover;
 }
 
+.gallery-wrap{
+  position: relative;
+}
+/* ---------- arrow indicator ---------- */
+.gallery-arrow{
+  position: absolute;
+  top: 50%;
+  right: 0;                       /* stick to the edge of the gallery */
+  transform: translateY(-50%);    /* true vertical centering */
+  
+  /* give it a box so bg color is predictable */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 45px;                    /* <- size of green pill; tweak */
+  height: 90px;                   /* match your visual taste */
+  font-size: 90px;                /* arrow glyph size */
+  color: #666;
+  background-color: #6cb04c;
+  pointer-events: none;
+  transition: opacity .3s;
+  opacity: .8;            /* visible by default */
+  padding-bottom: 15px;
+}
+
+.gallery-wrap.scrolled-end .gallery-arrow{
+  opacity: 0;                 /* hide when fully scrolled */
+}
+
 .gallery {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   gap: 10px;
-  height: 100%;
+  width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
 }
