@@ -80,7 +80,6 @@ app.get("/", (request, response) => {
   }
 
   response.render("index.ejs", {
-    posts: data,
     visitsToSite: request.cookies.visits,
     user: request.session.loggedInUser,
   });
@@ -289,7 +288,7 @@ app.get("/form", (request, response) => {
     .find(query)
     .sort(sortQuery)
     .exec((err, data) => {
-      response.render("form.ejs", {
+      response.render("uploadProjects/form.ejs", {
         posts: data,
         visitsToSite: request.cookies.visits,
         userName: request.session.loggedInUser,
@@ -359,7 +358,7 @@ app.post("/remove", requiresAuthentication, (req, res) => {
 app.get("/edit/:id", requiresAuthentication, (req, res) => {
   projectbase.findOne({ _id: req.params.id }, (err, doc) => {
     if (err || !doc) return res.status(404).send("Project not found");
-    res.render("editProject.ejs", {
+    res.render("uploadProjects/editProject.ejs", {
       post: doc,
       userName: req.session.loggedInUser,
     });
@@ -441,14 +440,14 @@ app.post(
 app.get("/login", (req, res) => {
   // console.log(req.query.error)
   if (req.query.error) {
-    res.render("login.ejs", { error: true });
+    res.render("utilities/login.ejs", { error: true });
   } else {
-    res.render("login.ejs", {referer:req.headers.referer});
+    res.render("utilities/login.ejs", {referer:req.headers.referer});
   }
 });
 
 app.get("/register", (req, res) => {
-  res.render("register.ejs", {});
+  res.render("utilities/register.ejs", {});
 });
 
 // code block for handling post requests from /auth and /signup

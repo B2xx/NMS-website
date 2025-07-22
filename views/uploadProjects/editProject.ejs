@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-<%- include('nav.ejs', { userName: userName }) %>
+<%- include('../utilities/nav.ejs', { userName: userName }) %>
 
     <div class="comment-container">
         <form method="POST" action="/updateProject" enctype="multipart/form-data">
