@@ -1,0 +1,80 @@
+<%- include('../utilities/nav.ejs', { userName }) %>
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>
+            <%= profile.name %> | Profile
+        </title>
+
+        <link rel="stylesheet" href="/style.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100..900&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="profile">
+            <section class="two">
+                <!-- portrait -->
+                <div class="material_img">
+                    <img src="<%= profile.photo || '/Links/default_profile.jpg' %>" alt="<%= profile.name %> portrait">
+                </div>
+
+                <!-- header -->
+                <div class="material_text">
+                    <h2>
+                        <%= profile.name %>
+                    </h2>
+                    <p>Email: <a href="mailto:<%= profile.email %>">
+                            <%= profile.email %>
+                        </a></p>
+                    <p>Phone: <%= profile.phone %>
+                    </p>
+                    <p>Website: <a href="<%= profile.website %>" target="_blank" rel="noopener">
+                            <%= profile.website %>
+                        </a></p>
+                    <h3>Bio</h3>
+                    <p>
+                        <%= profile.bio %>
+                    </p>
+                </div>
+            </section>
+            <hr style="border: 1px solid #999;">
+            <!-- projects -->
+            <% if (profile.projects && profile.projects.length) { %>
+                <div class="profile-projects">
+                    <h1>Projects</h1>
+                    <% profile.projects.forEach(p=> { %>
+                        <section class="two">
+                            <div class="material_img">
+                                <img src="<%= p.cover || '/Links/default_project.jpg' %>" alt="<%= p.title %> cover">
+                            </div>
+                            <div class="material-text">
+                                <h3>
+                                    <%= p.title %>
+                                </h3>
+                                <p>
+                                    <%= p.description %>
+                                </p>
+                            </div>
+                        </section>
+                        <% }) %>
+                            <% } %>
+                </div>
+                <div class="profile-gallery">
+                    <!-- gallery -->
+                    <% if (profile.gallery && profile.gallery.length) { %>
+                        <h1>Gallery</h1>
+                        <div class="gallery">
+                            <% profile.gallery.forEach(src=> { %>
+                                <img class="gallery-img" src="<%= src %>" alt="Gallery image">
+                                <% }) %>
+                                    <% } %>
+                        </div>
+                </div>
+        </div>
+        <div class="footer"><%- include('../utilities/footer.ejs') %></div>
+    </body>
+
+    </html>

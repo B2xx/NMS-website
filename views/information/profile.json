@@ -1,0 +1,27 @@
+{
+  "id": "jane-doe",
+  "name": "Jane Doe",
+  "email": "example@email.com",
+  "phone": "+86 123 456 7890",
+  "website": "https://examplesite.com",
+  "photo": "/Links/default_profile.jpg",
+  "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae turpis vehicula…",
+  "projects": [
+    {
+      "title": "Porous Ceramic Bracelet",
+      "description": "A 3D–printed bracelet exploring negative‑space lattices in clay. It was fired at cone 6 and finished with a walnut‑shell burnish.",
+      "cover": "/Links/default_project.jpg"
+    },
+    {
+      "title": "Coffee‑Ground Composite Vase",
+      "description": "Up‑cycled coffee grounds mixed with a biodegradable resin to create a lightweight, earthy vessel.",
+      "cover": "/Links/default_project.jpg"
+    }
+  ],
+  "gallery": [
+    "/Links/gallery1.jpg",
+    "/Links/gallery2.jpg",
+    "/Links/gallery3.jpg",
+    "/Links/gallery4.jpg"
+  ]
+}

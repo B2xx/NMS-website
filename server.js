@@ -163,6 +163,29 @@ app.get("/maker-in-residence", (request, response) => {
   });
 });
 
+const fs = require('fs').promises;
+const path = require('path');
+
+app.get('/profile/:id', async (req, res, next) => {
+  try {
+    const raw = await fs.readFile(
+      path.join(__dirname, 'views','information', 'profile.json'),
+      'utf8'
+    );
+    const profile = JSON.parse(raw);
+
+    if (profile.id !== req.params.id) return res.status(404).send('Not found');
+
+    res.render('information/profile.ejs', {
+      userName: req.session.loggedInUser,
+      profile
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 //Material Pages
 app.get('/recipes', (req, res) => {
   let query = {};

@@ -682,7 +682,7 @@ img.venue {
   padding: 5%;
 }
 
-.profile {
+.people-partner .profile {
   text-align: center;
   flex: 1;
   display:flex;          /* turn the profile into a column-flex container   */
@@ -954,4 +954,52 @@ img.venue {
   background: #fff;
   padding: 2px 5px;
   font-size: 12px;
+}
+
+/* Profile Page */
+.profile{
+  padding: 5%;
+  font-family: "helvetica", sans-serif;
+  text-align: left;
+}
+
+.profile section {
+  height: auto;
+  width: max-content;
+}
+
+.material_text >h3 {
+  font-family: "raleway", sans-serif;
+  font-weight: 500;
+  font-size: 32px;
+}
+
+.profile-projects > h1 {
+  font-family: "raleway", sans-serif;
+  font-weight: 300;
+  text-align: left;
+}
+
+.profile-projects section {
+  padding: 2% 0;
+}
+
+.profile-projects .material-text {
+  max-width: 800px;
+  padding:0 5%;
+  align-self: center;
+}
+
+.profile-gallery > h1 {
+  font-family: "raleway", sans-serif;
+  font-weight: 300;
+  text-align: left;
+}
+
+.profile-gallery .gallery-img {
+    min-width: 33%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
 }
