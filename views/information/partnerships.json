@@ -2,11 +2,13 @@
     {
     "name": "Jane Doe",
     "contact": "example@email.com",
-    "introduction": "This is a brief introduction."
+    "introduction": "This is a brief introduction.",
+    "photo": "/img/people/jane.jpg"
     },
     {
     "name": "Jane Doe",
     "contact": "example@email.com",
-    "introduction": "This is a brief introduction."
+    "introduction": "This is a brief introduction.",
+    "photo": "/img/people/jane.jpg"
     }
 ]
