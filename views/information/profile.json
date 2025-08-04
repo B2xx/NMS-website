@@ -1,27 +1,55 @@
-{
-  "id": "jane-doe",
-  "name": "Jane Doe",
-  "email": "example@email.com",
-  "phone": "+86 123 456 7890",
-  "website": "https://examplesite.com",
-  "photo": "/Links/default_profile.jpg",
-  "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae turpis vehicula…",
-  "projects": [
-    {
-      "title": "Porous Ceramic Bracelet",
-      "description": "A 3D–printed bracelet exploring negative‑space lattices in clay. It was fired at cone 6 and finished with a walnut‑shell burnish.",
-      "cover": "/Links/default_project.jpg"
-    },
-    {
-      "title": "Coffee‑Ground Composite Vase",
-      "description": "Up‑cycled coffee grounds mixed with a biodegradable resin to create a lightweight, earthy vessel.",
-      "cover": "/Links/default_project.jpg"
-    }
-  ],
-  "gallery": [
-    "/Links/gallery1.jpg",
-    "/Links/gallery2.jpg",
-    "/Links/gallery3.jpg",
-    "/Links/gallery4.jpg"
-  ]
-}
+[
+  {
+    "id": "jane-doe",
+    "name": "Jane Doe",
+    "email": "example@email.com",
+    "phone": "+86 123 456 7890",
+    "website": "https://examplesite.com",
+    "photo": "/Links/default_profile.jpg",
+    "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae turpis vehicula…",
+    "projects": [
+      {
+        "title": "Porous Ceramic Bracelet",
+        "description": "A 3D–printed bracelet exploring negative‑space lattices in clay. It was fired at cone 6 and finished with a walnut‑shell burnish.",
+        "cover": "/Links/default_project.jpg"
+      },
+      {
+        "title": "Coffee‑Ground Composite Vase",
+        "description": "Up‑cycled coffee grounds mixed with a biodegradable resin to create a lightweight, earthy vessel.",
+        "cover": "/Links/default_project.jpg"
+      }
+    ],
+    "gallery": [
+      "/Links/gallery1.jpg",
+      "/Links/gallery2.jpg",
+      "/Links/gallery3.jpg",
+      "/Links/gallery4.jpg"
+    ]
+  },
+  {
+    "id": "akio-tanaka",
+    "name": "Akio Tanaka",
+    "email": "akio.tanaka@example.com",
+    "phone": "+81 90-1234-5678",
+    "website": "https://akio-makes.jp",
+    "photo": "/Links/akio_profile.jpg",
+    "bio": "Akio is a wood-shop specialist who blends traditional Japanese joinery with CNC milling to create flat-pack, tool-free furniture.",
+    "projects": [
+      {
+        "title": "Kumiko Light Panel",
+        "description": "A back-lit wall piece CNC-milled in cedar, using kumiko lattice patterns to cast intricate shadows.",
+        "cover": "/Links/kumiko_panel.jpg"
+      },
+      {
+        "title": "Slot-Together Stool",
+        "description": "A plywood stool that assembles without screws; each joint is press-fit and reinforced with rice-glue sizing.",
+        "cover": "/Links/stool_project.jpg"
+      }
+    ],
+    "gallery": [
+      "/Links/akio_gallery1.jpg",
+      "/Links/akio_gallery2.jpg",
+      "/Links/akio_gallery3.jpg"
+    ]
+  }
+]

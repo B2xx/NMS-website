@@ -108,26 +108,26 @@
             </div>
             <div class="people-partner">
                 <h1>Makers in Residence</h1>
-    
-                <div class="profile-row">
-                    <div class="profile">
-                        <img src="img/materials.jpg" alt="Profile 1">
-                        <p style="font-size: 24px;">Name: Profile 1</p>
-                        <!-- <p style="font-size: 12px;">Contact: profile1@example.com</p>
-                        <p style="font-size: 18px;">Introduction: This is a brief introduction for Profile 1.</p> -->
-                        <div class = "material-btn" style = "margin-right: auto; margin-left: auto;"><a href="#"><span>View Profile ></span></a></div>
+
+                <% if (profiles && profiles.length) { %>
+                    <div class="profile-row">
+                        <% profiles.forEach(p=> { %>
+                            <div class="profile">
+                                <img src="<%= p.image %>" alt="<%= p.name %>">
+                                <p style="font-size:24px;">
+                                    <%= p.name %>
+                                </p>
+
+                                <div class="material-btn" style="margin:0 auto;">
+                                    <a href="/profile/<%= p.id %>"><span>View Profile ></span></a>
+                                </div>
+                            </div>
+                            <% }) %>
                     </div>
-                    <div class="profile">
-                        <img src="profile2.jpg" alt="Profile 2">
-                        <p>Profile 2</p>
-                        <div class = "material-btn" style = "margin-right: auto; margin-left: auto;"><a href="#"><span>View Profile ></span></a></div>
-                    </div>
-                    <div class="profile">
-                        <img src="profile3.jpg" alt="Profile 3">
-                        <p>Profile 3</p>
-                        <div class = "material-btn" style = "margin-right: auto; margin-left: auto;"><a href="#"><span>View Profile ></span></a></div>
-                    </div>
-                </div>
+                    <% } else { %>
+                        <p>No makers found.</p>
+                        <% } %>
             </div>
+
             <%- include('../utilities/footer.ejs') %>
     </body>

@@ -144,38 +144,49 @@ app.get("/partnerships", (request, response) => {
   });
 });
 
-app.get("/maker-in-residence", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  response.render("information/maker.ejs", {
-    visitsToSite: request.cookies.visits,
-    user: request.session.loggedInUser,
-  });
-});
-
 const fs = require('fs').promises;
 const path = require('path');
 
-app.get('/profile/:id', async (req, res, next) => {
+app.get('/maker-in-residence', async (req, res, next) => {
   try {
-    const raw = await fs.readFile(
-      path.join(__dirname, 'views','information', 'profile.json'),
+    /* visit-counter logic (unchanged) */
+    const visits = (req.cookies.visits = (req.cookies.visits || 0) + 1);
+    res.cookie('visits', visits, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000)
+    });
+
+    /* load the same JSON file */
+    const raw      = await fs.readFile(
+      path.join(__dirname, 'views', 'information', 'profile.json'),
       'utf8'
     );
-    const profile = JSON.parse(raw);
+    const profiles = JSON.parse(raw);               // ← array of makers
 
-    if (profile.id !== req.params.id) return res.status(404).send('Not found');
+    res.render('information/maker.ejs', {
+      visitsToSite: visits,
+      user: req.session.loggedInUser,
+      profiles                                   // pass to the view
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
+app.get('/profile/:id', async (req, res, next) => {
+  try {
+    /* 1 · read & parse the file */
+    const raw      = await fs.readFile(
+      path.join(__dirname, 'views', 'information', 'profile.json'),
+      'utf8'
+    );
+    const profiles = JSON.parse(raw);            // ← array
+
+    /* 2 · find the maker whose id matches the URL */
+    const profile = profiles.find(p => p.id === req.params.id);
+
+    if (!profile) return res.status(404).send('Not found');
+
+    /* 3 · render the page */
     res.render('information/profile.ejs', {
       userName: req.session.loggedInUser,
       profile
@@ -184,7 +195,6 @@ app.get('/profile/:id', async (req, res, next) => {
     next(err);
   }
 });
-
 
 //Material Pages
 app.get('/recipes', (req, res) => {
