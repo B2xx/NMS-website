@@ -563,15 +563,10 @@ img.venue {
   height: 90px;                   /* match your visual taste */
   font-size: 90px;                /* arrow glyph size */
   color: #666;
-  background-color: #6cb04c;
+  background-color: #fff;
   pointer-events: none;
-  transition: opacity .3s;
   opacity: .8;            /* visible by default */
   padding-bottom: 15px;
-}
-
-.gallery-wrap.scrolled-end .gallery-arrow{
-  opacity: 0;                 /* hide when fully scrolled */
 }
 
 .gallery {

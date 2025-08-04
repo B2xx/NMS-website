@@ -105,6 +105,7 @@
         <div class="footer"><%- include('../utilities/footer.ejs') %></div>
 
         <script>
+            //Search and filters
             const searchEl = document.getElementById('recipeSearch');
             const searchBtn = document.getElementById('recipeSearchBtn');
             const sortEl = document.getElementById('recipeSort');
@@ -154,7 +155,7 @@
                     tabLinks.forEach(l => l.classList.toggle('active', l === link));
                     refreshRecipes();
                 });
-            });
+            });           
         </script>
 
     </body>
