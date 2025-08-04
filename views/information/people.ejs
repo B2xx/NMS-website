@@ -13,25 +13,29 @@
     </head>
 
     <body>
+
         <div class="people-partner">
             <h1>People</h1>
-
-            <div class="profile-row">
-                <div class="profile">
-                    <img src="img/materials.jpg" alt="Profile 1">
-                    <p style="font-size: 24px;">Name: Profile 1</p>
-                    <p style="font-size: 12px;">Contact: profile1@example.com</p>
-                    <p style="font-size: 18px;">Introduction: This is a brief introduction for Profile 1.</p>
+            <% if (people && people.length) { %>
+                <div class="profile-row">
+                    <% people.forEach(p=> { %>
+                        <div class="profile">
+                            <img src="<%= p.photo %>" alt="<%= p.name %>">
+                            <p style="font-size:24px;">
+                                <%= p.name %>
+                            </p>
+                            <p style="font-size:12px;">
+                                <%= p.contact %>
+                            </p>
+                            <p style="font-size:18px;">
+                                <%= p.introduction %>
+                            </p>
+                        </div>
+                        <% }) %>
                 </div>
-                <div class="profile">
-                    <img src="profile2.jpg" alt="Profile 2">
-                    <p>Profile 2</p>
-                </div>
-                <div class="profile">
-                    <img src="profile3.jpg" alt="Profile 3">
-                    <p>Profile 3</p>
-                </div>
-            </div>
+                <% } else { %>
+                    <p>No people found.</p>
+                    <% } %>
         </div>
         <%- include('../utilities/footer.ejs') %>
     </body>

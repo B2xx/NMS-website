@@ -6,7 +6,7 @@ const nedb = require("@seald-io/nedb");
 const expressSession = require("express-session");
 const nedbSessionStore = require("nedb-promises-session-store");
 const bcrypt = require("bcrypt");
-const cors = require('cors');
+const cors = require("cors");
 
 // configuration variables
 let database = new nedb({
@@ -106,90 +106,112 @@ app.get("/about", (request, response) => {
   });
 });
 
-app.get("/people", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
+const fs = require("fs").promises;
+const path = require("path");
 
-  response.render("information/people.ejs", {
-    visitsToSite: request.cookies.visits,
-    user: request.session.loggedInUser,
-  });
-});
-
-app.get("/partnerships", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  response.render("information/partnerships.ejs", {
-    visitsToSite: request.cookies.visits,
-    user: request.session.loggedInUser,
-  });
-});
-
-const fs = require('fs').promises;
-const path = require('path');
-
-app.get('/maker-in-residence', async (req, res, next) => {
+app.get("/people", async (req, res, next) => {
   try {
-    /* visit-counter logic (unchanged) */
-    const visits = (req.cookies.visits = (req.cookies.visits || 0) + 1);
-    res.cookie('visits', visits, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000)
-    });
+    console.log(req.cookies.visits);
 
-    /* load the same JSON file */
-    const raw      = await fs.readFile(
-      path.join(__dirname, 'views', 'information', 'profile.json'),
-      'utf8'
+    if (req.cookies.visits) {
+      let newVisit = parseInt(req.cookies.visits) + 1;
+      res.cookie("visits", newVisit, {
+        expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+      });
+    } else {
+      res.cookie("visits", 1, {
+        expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+      });
+    }
+
+    const raw = await fs.readFile(
+      path.join(__dirname, "views", "information", "people.json"),
+      "utf8"
     );
-    const profiles = JSON.parse(raw);               // ← array of makers
+    const people = JSON.parse(raw); // ← array of people
 
-    res.render('information/maker.ejs', {
-      visitsToSite: visits,
+    res.render("information/people.ejs", {
       user: req.session.loggedInUser,
-      profiles                                   // pass to the view
+      people, // pass to template
     });
   } catch (err) {
     next(err);
   }
 });
 
-app.get('/profile/:id', async (req, res, next) => {
+app.get("/partnerships", async (req, res, next) => {
+  try {
+    console.log(req.cookies.visits);
+
+    if (req.cookies.visits) {
+      let newVisit = parseInt(req.cookies.visits) + 1;
+      res.cookie("visits", newVisit, {
+        expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+      });
+    } else {
+      res.cookie("visits", 1, {
+        expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+      });
+    }
+
+    const raw = await fs.readFile(
+      path.join(__dirname, "views", "information", "partnerships.json"),
+      "utf8"
+    );
+    const partnerships = JSON.parse(raw); // ← array of people
+
+    res.render("information/partnerships.ejs", {
+      user: req.session.loggedInUser,
+      partnerships, // pass to template
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get("/maker-in-residence", async (req, res, next) => {
+  try {
+    /* visit-counter logic (unchanged) */
+    const visits = (req.cookies.visits = parseInt(req.cookies.visits) + 1);
+    res.cookie("visits", visits, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+
+    /* load the same JSON file */
+    const raw = await fs.readFile(
+      path.join(__dirname, "views", "information", "profile.json"),
+      "utf8"
+    );
+    const profiles = JSON.parse(raw); // ← array of makers
+
+    res.render("information/maker.ejs", {
+      visitsToSite: visits,
+      user: req.session.loggedInUser,
+      profiles, // pass to the view
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get("/profile/:id", async (req, res, next) => {
   try {
     /* 1 · read & parse the file */
-    const raw      = await fs.readFile(
-      path.join(__dirname, 'views', 'information', 'profile.json'),
-      'utf8'
+    const raw = await fs.readFile(
+      path.join(__dirname, "views", "information", "profile.json"),
+      "utf8"
     );
-    const profiles = JSON.parse(raw);            // ← array
+    const profiles = JSON.parse(raw); // ← array
 
     /* 2 · find the maker whose id matches the URL */
-    const profile = profiles.find(p => p.id === req.params.id);
+    const profile = profiles.find((p) => p.id === req.params.id);
 
-    if (!profile) return res.status(404).send('Not found');
+    if (!profile) return res.status(404).send("Not found");
 
     /* 3 · render the page */
-    res.render('information/profile.ejs', {
+    res.render("information/profile.ejs", {
       userName: req.session.loggedInUser,
-      profile
+      profile,
     });
   } catch (err) {
     next(err);
@@ -197,44 +219,45 @@ app.get('/profile/:id', async (req, res, next) => {
 });
 
 //Material Pages
-app.get('/recipes', (req, res) => {
+app.get("/recipes", (req, res) => {
   let query = {};
   let sortQuery = { timestamp: -1 };
 
-  projectbase.find(query).sort(sortQuery).exec((err, posts) => {
-    if (err) {
-      res.status(500).send(err);
-      return;
-    }
+  projectbase
+    .find(query)
+    .sort(sortQuery)
+    .exec((err, posts) => {
+      if (err) {
+        res.status(500).send(err);
+        return;
+      }
 
-    res.render('materials/recipes.ejs', {
-      posts: posts, // Pass the posts to the EJS template
-      userName: req.session.loggedInUser,
+      res.render("materials/recipes.ejs", {
+        posts: posts, // Pass the posts to the EJS template
+        userName: req.session.loggedInUser,
+      });
     });
-  });
 });
 
 //search, filter feature of recipe page
-app.get('/recipes-data', (req, res) => {
-  const { search = '', sort = 'year_desc', tag = '' } = req.query;  
+app.get("/recipes-data", (req, res) => {
+  const { search = "", sort = "year_desc", tag = "" } = req.query;
   const sortMap = {
     year_desc: { timestamp: -1 },
-    year_asc:  { timestamp:  1 },
-    name_asc:  { title:      1 },
-    name_desc: { title:     -1 },
+    year_asc: { timestamp: 1 },
+    name_asc: { title: 1 },
+    name_desc: { title: -1 },
   };
 
   // Escape any regex metacharacters so "c++" doesn't blow up
-  const safe = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const rx    = new RegExp(safe, 'i');          // case-insensitive
+  const safe = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const rx = new RegExp(safe, "i"); // case-insensitive
 
   const filter = {};
-  if (search) filter.$or = [
-    { title: rx }, { brief: rx }, { ingredients: rx }
-  ];
-  if (tag) filter.tag = tag;  
+  if (search) filter.$or = [{ title: rx }, { brief: rx }, { ingredients: rx }];
+  if (tag) filter.tag = tag;
 
-    projectbase
+  projectbase
     .find(filter)
     .sort(sortMap[sort] || {})
     .exec((err, docs) => {
@@ -244,16 +267,16 @@ app.get('/recipes-data', (req, res) => {
 });
 
 //Individual recipe page
-app.get('/singleProject/:id', (request, response) => {
+app.get("/singleProject/:id", (request, response) => {
   const id = request.params.id;
 
   projectbase.findOne({ _id: id }, (err, doc) => {
     if (err || !doc) {
-      return response.status(404).send('Project not found');
+      return response.status(404).send("Project not found");
     }
 
-    response.render('materials/singleProject.ejs', {
-      post: doc,                           // **one** document
+    response.render("materials/singleProject.ejs", {
+      post: doc, // **one** document
       visitsToSite: request.cookies.visits,
       userName: request.session.loggedInUser,
     });
@@ -261,41 +284,38 @@ app.get('/singleProject/:id', (request, response) => {
 });
 
 const uploadPictures = upload.fields([
-  { name: "coverImage",    maxCount: 1  },
-  { name: "galleryImages", maxCount: 10 }
+  { name: "coverImage", maxCount: 1 },
+  { name: "galleryImages", maxCount: 10 },
 ]);
 
-app.post(
-  "/upload",
-  requiresAuthentication,
-  uploadPictures,
-  (req, res) => {
-    console.log(req.body);
+app.post("/upload", requiresAuthentication, uploadPictures, (req, res) => {
+  console.log(req.body);
 
-    let currDate = new Date();
+  let currDate = new Date();
 
-    let data = {
-      text: req.body.text,
-      date: currDate.toLocaleString(),
-      timestamp: currDate.getTime(),
-      likes: 0,
-      comments: []
-    };
+  let data = {
+    text: req.body.text,
+    date: currDate.toLocaleString(),
+    timestamp: currDate.getTime(),
+    likes: 0,
+    comments: [],
+  };
 
-    if (req.files?.coverImage?.[0]) {
-      data.coverSrc = "/uploads/" + req.files.coverImage[0].filename;
-    }
-
-    if (req.files?.galleryImages?.length) {
-      data.gallerySrc = req.files.galleryImages.map(f => "/uploads/" + f.filename);
-    }
-
-    database.insert(data, (err, newData) => {
-      console.log(newData);
-      res.redirect('back');
-    });
+  if (req.files?.coverImage?.[0]) {
+    data.coverSrc = "/uploads/" + req.files.coverImage[0].filename;
   }
-);
+
+  if (req.files?.galleryImages?.length) {
+    data.gallerySrc = req.files.galleryImages.map(
+      (f) => "/uploads/" + f.filename
+    );
+  }
+
+  database.insert(data, (err, newData) => {
+    console.log(newData);
+    res.redirect("back");
+  });
+});
 
 //Upload, update and delete projects feature
 app.get("/form", (request, response) => {
@@ -332,29 +352,28 @@ app.get("/form", (request, response) => {
 app.post(
   "/uploadProject",
   requiresAuthentication,
-  uploadPictures,                       // <-- replaces .single(...)
+  uploadPictures, // <-- replaces .single(...)
   (req, res) => {
-
     const now = new Date();
 
     // ---- core text fields ----
     const data = {
-      title:        req.body.title,
-      author:       req.body.author,
-      email:        req.body.email,
-      brief:        req.body.brief,
-      ingredients:  req.body.ingredients,
-      tag:          req.body.tag,
-      tools:        req.body.tools,
+      title: req.body.title,
+      author: req.body.author,
+      email: req.body.email,
+      brief: req.body.brief,
+      ingredients: req.body.ingredients,
+      tag: req.body.tag,
+      tools: req.body.tools,
       introduction: req.body.introduction,
-      methods:      req.body.methods,
-      curingT:      req.body.curingT,
-      results:      req.body.results,
-      physical:     req.body.physical,
-      materialO:    req.body.materialO,
-      otherO:       req.body.otherO,
-      date:         now.toLocaleString(),
-      timestamp:    now.getTime(),
+      methods: req.body.methods,
+      curingT: req.body.curingT,
+      results: req.body.results,
+      physical: req.body.physical,
+      materialO: req.body.materialO,
+      otherO: req.body.otherO,
+      date: now.toLocaleString(),
+      timestamp: now.getTime(),
     };
 
     // ---- picture paths ----
@@ -363,7 +382,9 @@ app.post(
     }
 
     if (req.files?.galleryImages?.length) {
-      data.gallerySrc = req.files.galleryImages.map(f => "/uploads/" + f.filename);
+      data.gallerySrc = req.files.galleryImages.map(
+        (f) => "/uploads/" + f.filename
+      );
     }
 
     projectbase.insert(data, (err, newDoc) => {
@@ -383,7 +404,7 @@ app.post("/remove", requiresAuthentication, (req, res) => {
 
   projectbase.remove(query, (err, numRemoved) => {
     console.log(`num removed elements ${numRemoved}`);
-    res.redirect('back');
+    res.redirect("back");
   });
 });
 
@@ -427,13 +448,12 @@ app.post(
 
     /* ─────────── COVER IMAGE ─────────── */
     // (a) user ticked "remove cover"
-    if (req.body.removeCover)  updated.coverSrc = undefined;
+    if (req.body.removeCover) updated.coverSrc = undefined;
 
     // (b) user uploaded a new cover
     if (req.files?.coverImage?.[0]) {
       updated.coverSrc = "/uploads/" + req.files.coverImage[0].filename;
     }
-
 
     /* ─────────── GALLERY ─────────── */
     // 1 ▸ keep whatever hidden inputs came back in *their new order*
@@ -446,12 +466,12 @@ app.post(
 
     // 2 ▸ drop anything the user ticked for deletion
     const toDelete = req.body.deleteGallery || [];
-    gallery = gallery.filter(src => !toDelete.includes(src));
+    gallery = gallery.filter((src) => !toDelete.includes(src));
 
     // 3 ▸ append brand-new uploads at the end
     if (req.files?.galleryImages?.length) {
       gallery.push(
-        ...req.files.galleryImages.map(f => "/uploads/" + f.filename)
+        ...req.files.galleryImages.map((f) => "/uploads/" + f.filename)
       );
     }
 
@@ -463,7 +483,7 @@ app.post(
       {},
       (err, numReplaced) => {
         console.log(`updated ${numReplaced}`);
-        res.redirect("back");      // or res.redirect('/') if you prefer
+        res.redirect("back"); // or res.redirect('/') if you prefer
       }
     );
   }
@@ -475,7 +495,7 @@ app.get("/login", (req, res) => {
   if (req.query.error) {
     res.render("utilities/login.ejs", { error: true });
   } else {
-    res.render("utilities/login.ejs", {referer:req.headers.referer});
+    res.render("utilities/login.ejs", { referer: req.headers.referer });
   }
 });
 
@@ -563,7 +583,6 @@ app.get("/projects", (request, response) => {
   });
 });
 
-
 //Inspiration Pages
 app.get("/inspiration", (request, response) => {
   console.log(request.cookies.visits);
@@ -578,10 +597,10 @@ app.get("/inspiration", (request, response) => {
     });
   }
 
-      response.render("inspirationAndGallery/inspiration.ejs", {
-        visitsToSite: request.cookies.visits,
-        user: request.session.loggedInUser,
-      });
+  response.render("inspirationAndGallery/inspiration.ejs", {
+    visitsToSite: request.cookies.visits,
+    user: request.session.loggedInUser,
+  });
 });
 
 const port = 7626;
