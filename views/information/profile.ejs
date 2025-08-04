@@ -62,7 +62,7 @@
                         <% }) %>
                             <% } %>
                 </div>
-                <div class="profile-gallery">
+                <div class="gallery-wrap">
                     <!-- gallery -->
                     <% if (profile.gallery && profile.gallery.length) { %>
                         <h1>Gallery</h1>
@@ -72,6 +72,7 @@
                                 <% }) %>
                                     <% } %>
                         </div>
+                        <span class="gallery-arrow" aria-hidden="true">›</span>
                 </div>
         </div>
         <div class="footer"><%- include('../utilities/footer.ejs') %></div>

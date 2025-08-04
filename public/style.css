@@ -547,8 +547,12 @@ img.venue {
 .gallery-wrap{
   position: relative;
 }
+
 /* ---------- arrow indicator ---------- */
 .gallery-arrow{
+  font-family: initial;
+  text-align: initial; 
+
   position: absolute;
   top: 50%;
   right: 0;                       /* stick to the edge of the gallery */
@@ -658,7 +662,7 @@ img.venue {
   padding-left: 5%;
 }
 
-.people-partner > h1 {
+.people-partner h1 {
   font-family: "raleway", sans-serif;
   font-weight: 300;
   color: #638b3d;
@@ -969,7 +973,7 @@ img.venue {
   font-size: 32px;
 }
 
-.profile-projects > h1 {
+.profile-projects h1, .gallery-wrap h1 {
   font-family: "raleway", sans-serif;
   font-weight: 300;
   text-align: left;
