@@ -2,7 +2,7 @@
 
   <body>
     <div class="form">
-      <% if (userName) { %>
+      <% if (userName === "b") { %>
         <form method="POST" action="/uploadProject" enctype="multipart/form-data">
           <p>Title</p>
           <input type="text" name="title" placeholder="Title" />
@@ -46,10 +46,10 @@
         </form>
     </div>
     <% } else { %>
-      <p><a href="/login">log in</a> to post project</p>
+      <p><a href="/login">log in</a> to the right account to post project</p>
       <%} %>
         </div>
-
+      <% if (userName === "b") { %>
         <div class="all-posts">
           <% posts.forEach( (post)=> { %>
             <div class="post">
@@ -151,6 +151,7 @@
             <hr>
             <% }) %>
         </div>
+        <%} %>
 
         <script>
           document.addEventListener('DOMContentLoaded', () => {

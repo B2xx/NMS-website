@@ -9,11 +9,6 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 
 // configuration variables
-let database = new nedb({
-  filename: "database.txt",
-  autoload: true,
-});
-
 let projectbase = new nedb({
   filename: "projectbase.txt",
   autoload: true,
@@ -33,7 +28,15 @@ let userdatabase = new nedb({
   filename: "userdb.txt",
   autoload: true,
 });
-
+userdatabase.ensureIndex(
+  { fieldName: "username", unique: true, sparse: false },
+  (err) => {
+    if (err) {
+      console.error("Could not create unique index on username:", err);
+      process.exit(1);           // or whatever fits your error-handling strategy
+    }
+  }
+);
 // initialize express library and settings
 const app = express();
 app.use(express.static("public"));
@@ -540,26 +543,33 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  res.render("utilities/register.ejs", {});
+  res.render("utilities/register.ejs", { error: null });   // ✅ always send it
 });
 
 // code block for handling post requests from /auth and /signup
-app.post("/signup", upload.single("profilePicture"), (req, res) => {
-  // encrypting password so plain text is not store in db
-  let hashedPassword = bcrypt.hashSync(req.body.password, 10);
+app.post("/signup", upload.none(),(req, res, next) => {
+  console.log("Incoming body:", req.body);
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
 
-  // local variable that holds my data obj to be inserted into userdb
-  let data = {
-    username: req.body.username,
+  const data = {
+    username: req.body.username.trim(), // normalise if you like
     password: hashedPassword,
+    ...(req.file && { filepath: "/uploads/" + req.file.filename }),
   };
 
-  if (req.file) {
-    data.filepath = "/uploads/" + req.file.filename;
-  }
+  userdatabase.insert(data, (err, inserted) => {
+    if (err) {
+      if (err.errorType === "uniqueViolated") {
+        // Username taken — show a message and stay on the register page
+        return res.render("utilities/register.ejs", {
+          error: "That username is already taken. Please choose another.",
+        });
+      }
+      // Any other DB error → pass to the Express error handler
+      return next(err);
+    }
 
-  userdatabase.insert(data, (err, dataInserted) => {
-    console.log(dataInserted);
+    console.log("User created:", inserted.username);
     res.redirect("/login");
   });
 });

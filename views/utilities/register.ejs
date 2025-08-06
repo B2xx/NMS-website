@@ -8,16 +8,16 @@
         <div class="register-content-container">
             <!-- <input type="text" name="fullname" placeholder="your full name" class="login-full-name"> -->
 
-            <input type="text" name="username" placeholder="choose a username" class="login-username">
+            <input type="text" name="username" placeholder="choose a username" class="login-username" required>
 
-            <input type="password" name="password" placeholder="choose a password" class="login-password">
-
-            <div class='pfp-container'>
-                <label for="fileUpload" class="custom-file-upload"> upload profile picture </label>
-
-                <input type="file" id="fileUpload" name="profilePicture">
-            </div>
+            <input type="password" name="password" placeholder="choose a password" class="login-password" required>
             <input type="submit" name="submitbutton" value="make my account!" class="submit-btn">
         </div>
     </form>
+
+    <% if (error) { %>
+        <p class="error">
+            <%= error %>
+        </p>
+        <% } %>
 </div>
