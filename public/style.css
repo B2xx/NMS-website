@@ -2,6 +2,12 @@ body {
   margin: 0;
   color: #262614;
 }
+/*Color Theme
+black #262614,
+grey #999,
+light-green,
+medium-green,
+dark-green */
 
 /* index page */
 .wrapper {
@@ -19,7 +25,6 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-
   scroll-snap-align: start;
 }
 .one {
@@ -58,17 +63,6 @@ img.material_img {
   animation-range-start: cover;
   animation-range-end: contain;
 }
-
-@keyframes fade-in {
-  from {
-    scale: 0.8;
-    opacity: 0;
-  }
-  to {
-    scale: 1;
-    opacity: 1;
-  }
-}
 .material_text {
   max-width: 800px;
   padding: 5%;
@@ -85,7 +79,7 @@ img.material_img {
   color: #262614;
   padding-bottom: 5%;
 }
-
+/*btn style is shared all over ejs files */
 .material-btn a {
   display: block;
   width: fit-content;
@@ -158,6 +152,7 @@ img.material_img {
   color: #262614;
   max-height: 38vw;
 }
+
 h4 {
   font-family: "helvetica", sans-serif;
   font-weight: lighter;
@@ -176,12 +171,61 @@ h3 {
   justify-content: center;
 }
 
-.footer{
+/*footer style */
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 30vw;
+  justify-content: center;
+  gap: 5%;
+}
+.footer-column {
+  color: #fff;
+}
+/* for footer in projects and inspiration pages */
+.footer-adjusted{
   margin: 0 -6%;
 }
 
-.footer-column {
-  color: #fff;
+/* for animation in index page*/
+.scroll-watcher {
+  height: 10px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: lime;
+  width: 100%;
+  scale: 0 1;
+  transform-origin: left;
+
+  animation: scroll-watcher linear;
+  animation-timeline: scroll();
+}
+
+@keyframes scroll-watcher {
+  to {
+    scale: 1 1;
+  }
+}
+
+img.venue {
+  animation: fade-in linear;
+  animation-timeline: view();
+  /* Wher animation start from the bottom of the page */
+  animation-range-start: cover;
+  animation-range-end: contain;
+}
+
+@keyframes fade-in {
+  from {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 /* NavBar */
@@ -212,7 +256,7 @@ h3 {
   padding: 0;
 }
 
-.nav-leftside {
+.nav-leftside, .nav-rightside {
   text-align: left;
   padding: 5px;
   display: flex;
@@ -221,11 +265,6 @@ h3 {
 }
 
 .nav-rightside {
-  text-align: left;
-  padding: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
   margin-right: 1em;
 }
 
@@ -280,7 +319,7 @@ h3 {
   width: 100%;
   height: 2px;
   left: 0;
-  background-color: #67735c;
+  background-color: #638b4d;
 }
 .nav .decoration a:hover {
   background-color: #96b85c;
@@ -293,8 +332,8 @@ h3 {
   font-weight: 300;
 }
 
-/* login */
-.form-container {
+/* login and registor*/
+.form-container, .register-content-container {
   justify-content: center;
   display: flex;
   flex-direction: column;
@@ -313,11 +352,8 @@ h3 {
 }
 
 /* register */
+/* other parts for registor-content-container is in login */
 .register-content-container {
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 30px;
 }
 .register-content-container form {
@@ -331,56 +367,13 @@ h3 {
   flex-grow: 1;
 }
 
-/* for animation in index page*/
-.scroll-watcher {
-  height: 10px;
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  background-color: lime;
-  width: 100%;
-  scale: 0 1;
-  transform-origin: left;
-
-  animation: scroll-watcher linear;
-  animation-timeline: scroll();
-}
-
-@keyframes scroll-watcher {
-  to {
-    scale: 1 1;
-  }
-}
-
-img.venue {
-  animation: fade-in linear;
-  animation-timeline: view();
-  /* Wher animation start from the bottom of the page */
-  animation-range-start: cover;
-  animation-range-end: contain;
-}
-
-@keyframes fade-in {
-  from {
-    transform: translateX(-50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
 /* Recipe Pages */
 .recipes {
   padding: 0 5%;
 }
 
 .recipes h1 {
-  font-family: "raleway", sans-serif;
-  font-weight: 300;
-  text-align: left;
-  color: #638b3d;
+  padding:0
 }
 
 /* header line */
@@ -393,7 +386,7 @@ img.venue {
 }
 
 /* let h1 stay left; inputs shrink nicely */
-.recipes-header h1{ margin:0; }
+.recipes-header h1{ padding-top:0; }
 
 /* basic look - tweak to taste */
 .recipes-header input,
@@ -423,7 +416,6 @@ img.venue {
 .art {
   min-width: 0;
   width: 100%;
-  /* border: 1px solid black; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -444,111 +436,26 @@ img.venue {
 }
 
 /* For Single Project */
-.container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 30vw;
-  justify-content: center;
-  gap: 5%;
+.canvas {
+  padding: 50px;
 }
-.container > img {
-  max-width: 60%;
-  max-height: 60%;
+.basic-info {
+  padding: 0.5em 0 0;
 }
-.caption {
-  padding-bottom: 2%;
+.basic-info h1 {
+  color: #262614;
 }
-.text {
-  font-size: 20px;
+.image-container img {
+  max-width: 80%;
 }
-.text > h4 {
-  margin: 2px;
-}
-
-.comment-container {
-  background-color: #cdd9ba;
-  font-size: 14px;
-  padding: 5%;
-}
-.comment-container > p {
-  text-align: left;
-  padding-left: 4%;
-}
-.comment-container > form {
-  margin: 3%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 4%;
-}
-
-.comment-container > form > input[type="text"] {
-  height: 8vw;
-  padding: 5%;
-}
-.comment-container > form > input[type="submit"] {
-  width: 5vw;
-}
-
-.comment-container > img {
-  max-width: 30%;
-  max-height: 30%;
-}
-
-.page {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-
-  /* centering all the elements on the page */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.post {
-  width: 100%;
-  /* border: 3px #ffddd7 solid;
-  shorthand for margin-top and margin-bottom */
-  margin: 2px 0px;
-  padding: 5px;
-  position: relative;
-}
-
-.post-img {
-  max-width: 30%;
-}
-
-.remove-button {
-  display: none;
-}
-
-.remove-label {
-  transform: rotate(45deg);
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-}
-
-.all-posts {
-  background-color: #cdd9ba;
-  white-space: pre-line;
-}
-
 .cover-img {
   width: 100%;
   max-height: 550px;
   object-fit: cover;
 }
-
 .gallery-wrap{
   position: relative;
 }
-
-/* ---------- arrow indicator ---------- */
 .gallery-arrow{
   font-family: initial;
   text-align: initial; 
@@ -598,41 +505,40 @@ img.venue {
   max-width: 100%;
   object-fit: cover;
 }
-
-/* For the singleProject page */
-.canvas {
-  padding: 50px;
-}
-.basic-info {
-  padding: 0.5em 0 0;
-}
-.basic-info h1 {
-  color: black;
+/*the form page */
+.form {
+  padding: 5%;
 }
 
-.image-container img {
-  max-width: 80%;
+.post {
+  width: 100%;
+  /* border: 3px #ffddd7 solid;
+  shorthand for margin-top and margin-bottom */
+  margin: 2px 0px;
+  padding: 5px;
+  position: relative;
 }
+
+.all-posts {
+  background-color: #cdd9ba;
+  white-space: pre-line;
+  padding:0 5%;
+}
+
+.post-value {
+  color: #1e88e5;   /* pick any color you like */
+  font-weight: 500; /* optional: make it stand out a bit */
+}
+
 
 /* for about page */
 .about {
   font-family: "helvetica", sans-serif;
-
-  /* width: 100%;
-  height: 100vh; */
   padding: 5% 5% 2% 5%;
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-
   scroll-snap-align: start;
 }
 
 .about > h1 {
-  font-family: "raleway", sans-serif;
-  font-weight: 200;
-  color: #638b3d;
-  text-align: left;
   margin: 0 0 2% 0;
 }
 
@@ -662,13 +568,14 @@ img.venue {
   padding-left: 5%;
 }
 
-.people-partner h1 {
+h1 {
   font-family: "raleway", sans-serif;
   font-weight: 300;
   color: #638b3d;
   text-align: left;
   padding-top: 2em;
 }
+
 .people-partner p {
   font-family: "helvetica", sans-serif;
   font-weight: lighter;
@@ -699,10 +606,7 @@ img.venue {
 
 /* maker page */
 .maker h1 {
-  font-family: "raleway", sans-serif;
-  font-weight: lighter;
-  color: #638b3d;
-  text-align: left;
+padding-top: 0;
 }
 
 .maker h2 {
@@ -741,7 +645,7 @@ img.venue {
 
 /* projects page */
 :root {
-  --black: #000;
+  --black: #262614;
 }
 
 .projects {
@@ -802,7 +706,6 @@ img.venue {
 }
 
 .projects .card {
-  background: linear-gradient(180deg, #6cb04c 0%, #4e873c 100%);
   border: 1px solid #3a6931;
   border-radius: 4px;
   padding: 1rem;
@@ -831,27 +734,8 @@ img.venue {
 .card-title {
   font-size: 20px;
   font-weight: 600;
-  color: #000;
+  color: #262614;
   margin: 1rem 0 0.5rem;
-}
-
-.projects .button {
-  display: inline-block;
-  background: var(--green);
-  color: #fff;
-  font-family: "raleway", sans-serif;
-  font-style: italic;
-  font-size: 14px;
-  padding: 0.5rem 1.5rem;
-  border: none;
-  border-radius: 2px;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: opacity 0.3s;
-}
-
-.projects .button:hover {
-  opacity: 0.8;
 }
 
 .tab-content {

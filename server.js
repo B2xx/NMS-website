@@ -489,6 +489,46 @@ app.post(
   }
 );
 
+//Projects Pages
+app.get("/projects", (request, response) => {
+  console.log(request.cookies.visits);
+  if (request.cookies.visits) {
+    let newVisit = parseInt(request.cookies.visits) + 1;
+    response.cookie("visits", newVisit, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  } else {
+    response.cookie("visits", 1, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  }
+
+  response.render("projects/projects.ejs", {
+    visitsToSite: request.cookies.visits,
+    user: request.session.loggedInUser,
+  });
+});
+
+//Inspiration Pages
+app.get("/inspiration", (request, response) => {
+  console.log(request.cookies.visits);
+  if (request.cookies.visits) {
+    let newVisit = parseInt(request.cookies.visits) + 1;
+    response.cookie("visits", newVisit, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  } else {
+    response.cookie("visits", 1, {
+      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
+    });
+  }
+
+  response.render("inspirationAndGallery/inspiration.ejs", {
+    visitsToSite: request.cookies.visits,
+    user: request.session.loggedInUser,
+  });
+});
+
 //Login, register feature
 app.get("/login", (req, res) => {
   // console.log(req.query.error)
@@ -561,46 +601,6 @@ app.post("/authenticate", (req, res) => {
 app.get("/logout", (req, res) => {
   delete req.session.loggedInUser;
   res.redirect("/");
-});
-
-//Projects Pages
-app.get("/projects", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  response.render("projects/projects.ejs", {
-    visitsToSite: request.cookies.visits,
-    user: request.session.loggedInUser,
-  });
-});
-
-//Inspiration Pages
-app.get("/inspiration", (request, response) => {
-  console.log(request.cookies.visits);
-  if (request.cookies.visits) {
-    let newVisit = parseInt(request.cookies.visits) + 1;
-    response.cookie("visits", newVisit, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  } else {
-    response.cookie("visits", 1, {
-      expires: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000),
-    });
-  }
-
-  response.render("inspirationAndGallery/inspiration.ejs", {
-    visitsToSite: request.cookies.visits,
-    user: request.session.loggedInUser,
-  });
 });
 
 const port = 7626;

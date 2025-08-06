@@ -1,132 +1,177 @@
 <%- include('../utilities/nav.ejs', { userName: userName }) %>
-<body>
-<div class="comment-container">
-    <% if (userName) { %>
-      <form method="POST" action="/uploadProject" enctype="multipart/form-data">
-        <p>Title</p>
-        <input type="text" name="title" placeholder="Title"/>
-        <p>Author</p>
-        <input type="text" name="author" placeholder="Author"/>
-        <p>Email</p>
-        <input type="text" name="email" placeholder="Email"/>
-        <p>Brief</p>
-        <textarea name="brief"  placeholder="brief" class="autosize"></textarea>
-        <p>Ingredients</p>
-        <textarea name="ingredients"  placeholder="ingredients" class="autosize"></textarea>
-        <p>Tag</p>
-        <select name="tag" required>
-          <option value="" disabled selected hidden>choose one</option>
-          <option value="Bioplastics">Bioplastics</option>
-          <option value="Ceramics">Ceramics</option>
-          <option value="Pigments">Pigments</option>
-          <option value="Composites">Composites</option>
-        </select>
-        <p>Tools</p>
-        <input type="text" name="tools" placeholder="Tools"/>
-        <p>Introduction / Purpose</p>
-        <textarea name="introduction" placeholder="Introduction / Purpose" class="autosize"></textarea>
-        <p>Methods</p>
-        <textarea name="methods" placeholder="Methods" class="autosize"></textarea>
-        <p>Curing Time and Temperature</p>
-        <textarea name="curingT" placeholder="Curing Time and Temperature" class="autosize"></textarea>
-        <p>Results</p>
-        <textarea name="results" placeholder="Results" class="autosize"></textarea>
-        <p>Physical Aspect</p>
-        <textarea name="physical" placeholder="Physical Aspect" class="autosize"></textarea>
-        <p>Material Observations (External Factors or Changes Over Time)</p> 
-        <textarea name="materialO" placeholder="Material Observations" class="autosize"></textarea>
-        <p>Other Observations</p>
-        <textarea name="otherO" placeholder="Other Observations" class="autosize"></textarea>
-        <p>Cover image (required, recommened to be horizontal)</p>
-        <input type="file" name="coverImage" accept="image/*" required />
-        <p>Gallery images (optional, you can select several)</p>
-        <input type="file" name="galleryImages" accept="image/*" multiple />
-        <input type="submit" name="submitbutton" value="Submit"/>
-      </form>
-  </div>
-  <% } else { %>
-    <p><a href="/login">log in</a> to post project</p>
-    <%} %>
-</div>
 
-<div class="all-posts">
-  <% posts.forEach( (post)=> { %>
-    <div class="post">
-      <span class="date">
-        <%= post.date %>
-      </span>
-      <div class="post-text">
-        <p>Title</p>
-        <%= post.title %>
-        <p>Author</p>
-        <%= post.author %>
-        <p>Email</p>
-        <%= post.email %>
-        <p>Brief</p>
-        <%= post.brief %>
-        <p>Ingredients</p>
-        <%= post.ingredients %>
-        <p>Material Type</p>
-        <%= post.tag %>
-        <p>Tools</p>
-        <%= post.tools %> 
-        <p>Introduction / Purpose</p>
-        <%= post.introduction %>
-        <p>Methods</p>
-        <%= post.methods %>
-        <p>Curing Time and Temperature</p>
-        <%= post.curingT %>
-        <p>Results</p>
-        <%= post.results %>
-        <p>Physical Aspect</p>
-        <%= post.physical %>
-        <p>Material Observations</p>
-        <%= post.materialO %>
-        <p>Other Observations</p>
-        <%= post.otherO %>
-      </div>
-      <% if (post.coverSrc) { %>
-        <img class="post-cover" src="<%= post.coverSrc %>" />
-      <% } %>
-
-      <% if (post.gallerySrc && post.gallerySrc.length) { %>
-        <div class="gallery">
-          <% post.gallerySrc.forEach(src => { %>
-            <img class="gallery-img" src="<%= src %>" />
-          <% }) %>
-        </div>
-      <% } %>
-      <form method="POST" action="/remove">
-          <button type="submit" name="postId" value="<%= post._id %>">Delete</button>
-      </form>
-      <form method="GET" action="/edit/<%= post._id %>">
-          <button type="submit">Edit</button>
-      </form>
+  <body>
+    <div class="form">
+      <% if (userName) { %>
+        <form method="POST" action="/uploadProject" enctype="multipart/form-data">
+          <p>Title</p>
+          <input type="text" name="title" placeholder="Title" />
+          <p>Author</p>
+          <input type="text" name="author" placeholder="Author" />
+          <p>Email</p>
+          <input type="text" name="email" placeholder="Email" />
+          <p>Brief</p>
+          <textarea name="brief" placeholder="brief" class="autosize"></textarea>
+          <p>Ingredients</p>
+          <textarea name="ingredients" placeholder="ingredients" class="autosize"></textarea>
+          <p>Tag</p>
+          <select name="tag" required>
+            <option value="" disabled selected hidden>choose one</option>
+            <option value="Bioplastics">Bioplastics</option>
+            <option value="Ceramics">Ceramics</option>
+            <option value="Pigments">Pigments</option>
+            <option value="Composites">Composites</option>
+          </select>
+          <p>Tools</p>
+          <input type="text" name="tools" placeholder="Tools" />
+          <p>Introduction / Purpose</p>
+          <textarea name="introduction" placeholder="Introduction / Purpose" class="autosize"></textarea>
+          <p>Methods</p>
+          <textarea name="methods" placeholder="Methods" class="autosize"></textarea>
+          <p>Curing Time and Temperature</p>
+          <textarea name="curingT" placeholder="Curing Time and Temperature" class="autosize"></textarea>
+          <p>Results</p>
+          <textarea name="results" placeholder="Results" class="autosize"></textarea>
+          <p>Physical Aspect</p>
+          <textarea name="physical" placeholder="Physical Aspect" class="autosize"></textarea>
+          <p>Material Observations (External Factors or Changes Over Time)</p>
+          <textarea name="materialO" placeholder="Material Observations" class="autosize"></textarea>
+          <p>Other Observations</p>
+          <textarea name="otherO" placeholder="Other Observations" class="autosize"></textarea>
+          <p>Cover image (required, recommened to be horizontal)</p>
+          <input type="file" name="coverImage" accept="image/*" required />
+          <p>Gallery images (optional, you can select several)</p>
+          <input type="file" name="galleryImages" accept="image/*" multiple />
+          <input type="submit" name="submitbutton" value="Submit" />
+        </form>
     </div>
-    <hr>
-    <% }) %>
-</div>
+    <% } else { %>
+      <p><a href="/login">log in</a> to post project</p>
+      <%} %>
+        </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('form[action="/uploadProject"]');
-  if (!form) return;
+        <div class="all-posts">
+          <% posts.forEach( (post)=> { %>
+            <div class="post">
+              <span class="date">
+                <%= post.date %>
+              </span>
+              <div class="post-text">
+                <p>Title</p>
+                <span class="post-value">
+                  <%= post.title %>
+                </span>
 
-  form.addEventListener('submit', e => {
-    const cover   = form.coverImage.files;
-    const gallery = form.galleryImages.files;
-    const files   = [...cover, ...gallery];
-    const max     = 5 * 1024 * 1024; // 5 MB
+                <p>Author</p>
+                <span class="post-value">
+                  <%= post.author %>
+                </span>
 
-    for (const f of files) {
-      if (f.size > max) {
-        e.preventDefault();
-        alert(`${f.name} is ${ (f.size/1048576).toFixed(1) } MB — please choose a file ≤ 5 MB.`);
-        return;
-      }
-    }
-  });
-});
-</script>
+                <p>Email</p>
+                <span class="post-value">
+                  <%= post.email %>
+                </span>
 
-</body>
+                <p>Brief</p>
+                <span class="post-value">
+                  <%= post.brief %>
+                </span>
+
+                <p>Ingredients</p>
+                <span class="post-value">
+                  <%= post.ingredients %>
+                </span>
+
+                <p>Material Type</p>
+                <span class="post-value">
+                  <%= post.tag %>
+                </span>
+
+                <p>Tools</p>
+                <span class="post-value">
+                  <%= post.tools %>
+                </span>
+
+                <p>Introduction / Purpose</p>
+                <span class="post-value">
+                  <%= post.introduction %>
+                </span>
+
+                <p>Methods</p>
+                <span class="post-value">
+                  <%= post.methods %>
+                </span>
+
+                <p>Curing Time and Temperature</p>
+                <span class="post-value">
+                  <%= post.curingT %>
+                </span>
+
+                <p>Results</p>
+                <span class="post-value">
+                  <%= post.results %>
+                </span>
+
+                <p>Physical Aspect</p>
+                <span class="post-value">
+                  <%= post.physical %>
+                </span>
+
+                <p>Material Observations</p>
+                <span class="post-value">
+                  <%= post.materialO %>
+                </span>
+
+                <p>Other Observations</p>
+                <span class="post-value">
+                  <%= post.otherO %>
+                </span>
+              </div>
+
+              <% if (post.coverSrc) { %>
+                <img class="post-cover" src="<%= post.coverSrc %>" />
+                <% } %>
+                  <div class="gallery-wrap">
+                    <% if (post.gallerySrc && post.gallerySrc.length) { %>
+                      <div class="gallery">
+                        <% post.gallerySrc.forEach(src=> { %>
+                          <img class="gallery-img" src="<%= src %>" />
+                          <% }) %>
+                            <span class="gallery-arrow" aria-hidden="true">›</span>
+                      </div>
+                      <% } %>
+                  </div>
+                  <form method="POST" action="/remove">
+                    <button type="submit" name="postId" value="<%= post._id %>">Delete</button>
+                  </form>
+                  <form method="GET" action="/edit/<%= post._id %>">
+                    <button type="submit">Edit</button>
+                  </form>
+            </div>
+            <hr>
+            <% }) %>
+        </div>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form[action="/uploadProject"]');
+            if (!form) return;
+
+            form.addEventListener('submit', e => {
+              const cover = form.coverImage.files;
+              const gallery = form.galleryImages.files;
+              const files = [...cover, ...gallery];
+              const max = 5 * 1024 * 1024; // 5 MB
+
+              for (const f of files) {
+                if (f.size > max) {
+                  e.preventDefault();
+                  alert(`${f.name} is ${(f.size / 1048576).toFixed(1)} MB — please choose a file ≤ 5 MB.`);
+                  return;
+                }
+              }
+            });
+          });
+        </script>
+
+  </body>
