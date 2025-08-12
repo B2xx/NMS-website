@@ -52,7 +52,7 @@ section {
   align-items: center;
   justify-content: center;
 }
-
+/*shared with individual's profile from makers*/
 .material_img {
   align-self: center;
 }
@@ -63,6 +63,7 @@ img.material_img {
   animation-range-start: cover;
   animation-range-end: contain;
 }
+
 .material_text {
   max-width: 800px;
   padding: 5%;
@@ -453,6 +454,7 @@ img.venue {
   max-height: 550px;
   object-fit: cover;
 }
+/*Gallery part is used in profile under makers space */
 .gallery-wrap{
   position: relative;
 }
